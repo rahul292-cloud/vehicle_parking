@@ -42,7 +42,7 @@ class ParkingSlot(View):
         if forms.is_valid():
             slot_name = forms.cleaned_data.get('slot_name')
             slot_status = forms.cleaned_data.get('slot_status')
-            self.parking_forms.objects.create(slot_name=slot_name, slot_status=slot_status)
+            self.parking_model.objects.create(slot_name=slot_name, slot_status=slot_status)
             # messages.success(request, 'successfully add to database ')
             return redirect(to='parkingSlot')
 
