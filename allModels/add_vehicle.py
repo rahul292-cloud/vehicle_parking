@@ -14,4 +14,4 @@ class UserVehicle(BaseModel):
     parking_slot=models.ForeignKey(Parking_slot,on_delete=models.CASCADE,null=True,blank=True)
 
     def __str__(self):
-        return self.owner_name,self.vehicle_no
+        return self.owner_name

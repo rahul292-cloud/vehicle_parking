@@ -50,14 +50,21 @@ class ParkingSlot(View):
 class BookVehicle(View):
     vehicle_forms = UserVehicleForm
     vehicle_model = add_vehicle.UserVehicle
+    parking_model = parking_slot.Parking_slot
     bookVehicle_add_templates = 'dashboard/add_vehicle.html'
 
     def get(self, request, *args, **kwargs):
         if 'bookVehicle' in kwargs:
-            return render(request, self.bookVehicle_add_templates, {'form': self.vehicle_forms()})
+            available_slot = parking_slot.Parking_slot.objects.filter(slot_status=True)
+            print(available_slot)
+            return render(request, self.bookVehicle_add_templates, {'form': self.vehicle_forms(), 'available_slot':available_slot})
 
     def post(self, request, *args, **kwargs):
         forms = self.vehicle_forms(request.POST)
+
+        parkingID = request.POST['slot']
+        selected_slot = self.parking_model.objects.get(pk=parkingID)
+        print(selected_slot)
         if forms.is_valid():
             categoty_name = forms.cleaned_data.get('categoty_name')
             owner_name = forms.cleaned_data.get('owner_name')
@@ -65,10 +72,13 @@ class BookVehicle(View):
             vehicle_model = forms.cleaned_data.get('vehicle_model')
             vehicle_no = forms.cleaned_data.get('vehicle_no')
             chessis_no = forms.cleaned_data.get('chessis_no')
-            parking_slot = forms.cleaned_data.get('parking_slot')
+            # parking_slot = forms.cleaned_data.get('parking_slot')
             self.vehicle_model.objects.create(categoty_name=categoty_name, owner_name=owner_name,
                                               owner_contact=owner_contact,
                                               vehicle_model=vehicle_model, vehicle_no=vehicle_no, chessis_no=chessis_no,
-                                              parking_slot=parking_slot)
+                                              parking_slot=selected_slot)
             # messages.success(request, 'successfully add to database ')
+            self.parking_model.objects.filter(pk=parkingID).update(
+                slot_status=False
+            )
             return redirect(to='bookVehicle')
