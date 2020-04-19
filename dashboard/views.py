@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 from .forms import *
 from django.contrib import messages
-from allModels import category, add_vehicle, parking_slot
+from allModels import category, add_vehicle, parking_slot,parking_in
 
 
 # Create your views here.
@@ -72,3 +72,12 @@ class BookVehicle(View):
                                               parking_slot=parking_slot)
             # messages.success(request, 'successfully add to database ')
             return redirect(to='bookVehicle')
+
+class ParkingEntry(View):
+    parking_entry_forms =ParkingEntryForm
+    parking_entry_model = parking_in.ParkingIn
+    parking_entry_add_templates = 'dashboard/parking_entry.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'parkingEntry' in kwargs:
+            return render(request, self.parking_entry_add_templates, {'form': self.parking_entry_forms()})
