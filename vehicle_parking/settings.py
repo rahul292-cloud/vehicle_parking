@@ -77,8 +77,11 @@ WSGI_APPLICATION = 'vehicle_parking.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'vehicle_parking',
+        'USER':'postgres',
+        'PASSWORD':'root',
+        'HOST':'localhost'
     }
 }
 
@@ -120,3 +123,29 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# MEDIA_ROOT= os.path.join(BASE_DIR,'media')
+
+
+
+# STATIC FILES WILL BE SERVED FROM STATIC_CDN WHEN WE ARE LIVE - OUT SIDE OF PROJECT
+# STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
+
+#THIS KEEPS THE PROJECT FILES - CSS/JS/IMAGES/FONTS
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR,'static'),
+# ]
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+# MEDIA - UPLOADED FILES/IMAGES
+MEDIA_URL = '/media/'
+
+# MEDIA FILES WILL BE SERVED FROM STATIC_CDN WHEN WE ARE LIVE
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
+
+
