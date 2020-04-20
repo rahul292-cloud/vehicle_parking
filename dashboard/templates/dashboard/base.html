@@ -17,7 +17,11 @@
     <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
     <meta property="og:description"
           content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
-    <title>Kemar Automation</title>
+    <title>
+        {% block title %}
+        Kemar Automation
+        {% endblock %}
+    </title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -133,7 +137,7 @@
                 class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 <li><a class="treeview-item" href="{% url 'bookVehicle' %}"><i class="icon fa fa-circle-o"></i>Add</a></li>
-                <li><a class="treeview-item" href="form-custom.html"><i class="icon fa fa-circle-o"></i>Manage</a></li>
+                <li><a class="treeview-item" href="{% url 'viewVehicle' %}"><i class="icon fa fa-circle-o"></i>Manage</a></li>
             </ul>
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview">

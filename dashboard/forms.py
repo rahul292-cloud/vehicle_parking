@@ -6,6 +6,8 @@ from allModels import category,add_vehicle,parking_slot,parking_in
     # ,,parking_out,
 # from django.forms import ModelForm
 
+class DateInput(forms.DateInput):
+    input_type='date'
 
 
 class CategoryForm(forms.ModelForm):
@@ -15,7 +17,7 @@ class CategoryForm(forms.ModelForm):
             'category_name'
         ]
 
-        wedgets={
+        widgets={
             'category_name': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
 
         }
@@ -27,8 +29,7 @@ class ParkingSlotForm(forms.ModelForm):
         fields=[
             'slot_name','slot_status'
         ]
-
-        wedgets={
+        widgets={
             'slot_name': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
         }
 
@@ -39,13 +40,13 @@ class ParkingEntryForm(forms.ModelForm):
         fields=[
             'user_details','entry_date','entry_time'
         ]
+        # forms.DateInput(format='%d/%m/%Y')
 
-        # wedgets={
-        #     'user_details': forms.Select(attrs={'class': 'form-control form-control-sm'}),
-        #     'entry_date': forms.DateField(),
-        #     'entry_time': forms.TimeField(),
-        #
-        # }
+        widgets={
+            'user_details': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'entry_date':  forms.DateInput(format='%d/%m/%Y'),
+            # 'entry_time': forms.TimeField(format='%H:%M'),
+        }
 
 #
 #
@@ -69,10 +70,11 @@ class UserVehicleForm(forms.ModelForm):
     class Meta:
         model=add_vehicle.UserVehicle
         fields=[
-            'categoty_name','owner_name','owner_contact','vehicle_model','vehicle_no','chessis_no','parking_slot',
+            'categoty_name','Barcode_no','owner_name','owner_contact','vehicle_model','vehicle_no','chessis_no','parking_slot',
             ]
-        wedgets={
+        widgets={
             'categoty_name': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'Barcode_no': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
             'owner_name': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
             'owner_contact': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
             'vehicle_model': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
@@ -81,4 +83,5 @@ class UserVehicleForm(forms.ModelForm):
             'parking_slot': forms.Select(attrs={'class': 'form-control form-control-sm'}),
 
         }
+
 

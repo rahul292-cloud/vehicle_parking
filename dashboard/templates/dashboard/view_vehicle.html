@@ -1,0 +1,61 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}
+Book vehicle
+{% endblock %}
+
+{% block content %}
+
+      <div class="app-title">
+        <div>
+          <h1><i class="fa fa-th-list"></i> Book Vehicle</h1>
+          <p>Book vehicle to display analytical data effectively</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item">Tables</li>
+          <li class="breadcrumb-item active"><a href="#">Data Table</a></li>
+        </ul>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+            <div class="tile-body">
+              <div class="table-responsive">
+                <table class="table table-hover table-bordered" id="sampleTable">
+                  <thead>
+                    <tr>
+                      <th>Categoty Name</th>
+                      <th>Barcode Number</th>
+                      <th>Owner Name</th>
+                      <th>Mobile Number</th>
+                      <th>Vehicle Model</th>
+                      <th>Vehicle Number</th>
+                      <th>Chessis Number</th>
+                      <th>Slot Number</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  {% for vehicle in form %}
+
+                  <tbody>
+                    <tr>
+                      <td>{{vehicle.categoty_name}}</td>
+                      <td>{{vehicle.Barcode_no}}</td>
+                      <td>{{vehicle.owner_name}}</td>
+                      <td>{{vehicle.owner_contact}}</td>
+                      <td>{{vehicle.vehicle_model}}</td>
+                      <td>{{vehicle.vehicle_no}}</td>
+                      <td>{{vehicle.chessis_no}}</td>
+                      <td>{{vehicle.parking_slot}}</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+
+                  {% endfor %}
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}
