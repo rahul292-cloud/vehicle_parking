@@ -95,18 +95,23 @@ class ParkingEntry(View):
     parking_entry_forms =ParkingEntryForm
     parking_entry_model = parking_in.ParkingIn
     parking_entry_add_templates = 'dashboard/parking_entry.html'
+    vehicle_model = add_vehicle.UserVehicle
 
     def get(self, request, *args, **kwargs):
         if 'parkingEntry' in kwargs:
             available_barcode = add_vehicle.UserVehicle.objects.all()
-            return render(request, self.parking_entry_add_templates, {'form': self.parking_entry_forms(),'barcode':available_barcode})
+            return render(request, self.parking_entry_add_templates, {'form': self.parking_entry_add_templates,'barcode':available_barcode})
 
     def post(self,request,*args,**kwargs):
         forms=self.parking_entry_forms(request.POST)
         barcode=request.POST['barcode']
+        print(barcode)
         entrydate=request.POST['entrydate']
         entrytime=request.POST['entrytime']
-        barcode_no = self.parking_entry_model.objects.get(pk=barcode)
+        barcode_no = self.vehicle_model.objects.get(pk=barcode)
+        print(barcode_no)
+        # barcode_no = self.parking_entry_model.objects.get(pk=barcode)
+        # print(barcode_no)
         # barcode_no = get_object_or_404(self.parking_entry_model, pk=barcode)
 
         # barcode_no = add_vehicle.UserVehicle.objects.values('Barcode_no','id')
@@ -115,9 +120,9 @@ class ParkingEntry(View):
 
               # return render(request, self.parking_entry_add_templates, {'error': 'Barcode has already entered'})
         if forms.is_valid():
-            # forms.save()
-           entrysave= self.parking_entry_model(
+
+           self.parking_entry_model.objects.create(
                     user_details=barcode_no, entry_date=entrydate, entry_time=entrytime)
-           entrysave.save()
+
            return redirect(to='parkingEntry')
 
