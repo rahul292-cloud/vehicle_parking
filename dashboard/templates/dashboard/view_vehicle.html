@@ -32,6 +32,7 @@ Book vehicle
                       <th>Vehicle Number</th>
                       <th>Chessis Number</th>
                       <th>Slot Number</th>
+                      <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -47,7 +48,11 @@ Book vehicle
                       <td>{{vehicle.vehicle_no}}</td>
                       <td>{{vehicle.chessis_no}}</td>
                       <td>{{vehicle.parking_slot}}</td>
-                      <td></td>
+                      <td>{{vehicle.status}}</td>
+                      <td>
+                        <a class="btn btn-primary" href="{% url 'EditVehicle' vehicle.pk %}"><i class="fa fa-pencil-square-o"></i></a>
+                        <a class="btn btn-primary" href="{% url 'EditVehicle' vehicle.pk %}"><i class="fa fa-trash-o"></i></a>
+                      </td>
                     </tr>
                   </tbody>
 

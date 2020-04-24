@@ -1,0 +1,55 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}
+Parking Slot View
+{% endblock %}
+
+{% block content %}
+
+<div class="app-title">
+    <div>
+        <h1><i class="fa fa-th-list"></i> Parking Entry</h1>
+        <p>Parking slot to display analytical data effectively</p>
+    </div>
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+        <li class="breadcrumb-item">Tables</li>
+        <li class="breadcrumb-item active"><a href="#">Data Table</a></li>
+    </ul>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                        <tr>
+                            <th>Barcode Number</th>
+                            <th>Entry Date</th>
+                            <th>Entry Time</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        {% for parkingEntry in parkingView %}
+
+                        <tbody>
+                        <tr>
+                            <td>{{parkingEntry.user_details}}</td>
+                            <td>{{parkingEntry.entry_date}}</td>
+                            <td>{{parkingEntry.entry_time}}</td>
+                            <td>
+                                <!--                        <a class="btn btn-primary" href="{% url 'parkingEntryEdit' parkingEntry.pk %}"><i class="fa fa-pencil-square-o"></i></a>-->
+                                <a class="btn btn-primary" href="{% url 'parkingEntryEdit' parkingEntry.pk %}"><i
+                                        class="fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

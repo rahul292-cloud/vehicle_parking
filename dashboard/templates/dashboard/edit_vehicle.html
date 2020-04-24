@@ -1,12 +1,12 @@
 {% extends 'dashboard/base.html' %}
 {% block title %}
-Category
+Vehicle Edit
 {% endblock %}
 
 {% block content %}
 <div class="app-title">
     <div>
-        <h1><i class="fa fa-plus"></i> Book Vehicle</h1>
+        <h1><i class="fa fa-edit"></i> Edit Vehicle</h1>
 
     </div>
 </div>
@@ -22,14 +22,14 @@ Category
                         <div class="form-group col-lg-5">
                             <label for="exampleInputName">Categoty Name</label>
                             <div id="exampleInputName" name="name">
-                                {{form.categoty_name}}
+                                {{UpdateVehicle.categoty_name}}
                             </div>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputBarcode">Barcode Number</label>
                             <div id="exampleInputBarcode" name="name">
-                                {{form.Barcode_no}}
+                                {{UpdateVehicle.Barcode_no}}
                             </div>
                         </div>
 
@@ -37,35 +37,35 @@ Category
                         <div class="form-group col-lg-5">
                             <label for="exampleInputWebsite">Owner Name</label>
                             <div id="exampleInputWebsite" name="Web name">
-                                {{form.owner_name}}
+                                {{UpdateVehicle.owner_name}}
                             </div>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputEmai">Owner Contact</label>
                             <div id="exampleInputEmai" name="Email">
-                                {{form.owner_contact}}
+                                {{UpdateVehicle.owner_contact}}
                             </div>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputMobile">Vehicle Model</label>
                             <div id="exampleInputMobile" name="Mobile Number">
-                                {{form.vehicle_model}}
+                                {{UpdateVehicle.vehicle_model}}
                             </div>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputGst">Vehicle No</label>
                             <div id="exampleInputGst" name="GST">
-                                {{form.vehicle_no}}
+                                {{UpdateVehicle.vehicle_no}}
                             </div>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputCin">Chessis No</label>
                             <div id="exampleInputCin" name="CIN">
-                                {{form.chessis_no}}
+                                {{UpdateVehicle.chessis_no}}
                             </div>
                         </div>
 
@@ -73,12 +73,13 @@ Category
                         <div class="form-group col-lg-5">
                             <label for="exampleInputAddress">Parking Slot</label>
                             <div id="exampleInputAddress" name="parking_slot">
-                                <select name="slot" id="slot" class="form-control form-control-sm">
-                                    <option value="0">Select Slot</option>
-                                    {% for item in available_slot %}
-                                    <option value="{{item.id}}">{{item.slot_name}}</option>
-                                    {% endfor %}
-                                </select>
+<!--                                <select name="slot" id="slot" class="form-control form-control-sm">-->
+<!--                                    <option value="0">Select Slot</option>-->
+<!--                                    {% for item in available_slot %}-->
+<!--                                    <option value="{{item.id}}">{{item.slot_name}}</option>-->
+<!--                                    {% endfor %}-->
+<!--                                </select>-->
+                                {{UpdateVehicle.parking_slot}}
                             </div>
                         </div>
 
@@ -88,7 +89,7 @@ Category
                         <div class="row">
                             <div class="col-md-8 col-md-offset-3">
                                 <button class="btn btn-primary" type="submit"><i
-                                        class="fa fa-fw fa-lg fa-check-circle"></i>Submit
+                                        class="fa fa-fw fa-lg fa-check-circle"></i>Update
                                 </button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="#"
                                                               onClick="window.location.reload();">
                                 <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>

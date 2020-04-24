@@ -13,6 +13,7 @@ class UserVehicle(BaseModel):
     vehicle_no=models.CharField(max_length=100,null=False,blank=False,editable=True)
     chessis_no=models.CharField(max_length=100,null=False,blank=False,editable=True)
     parking_slot=models.ForeignKey(Parking_slot,on_delete=models.CASCADE,null=True,blank=True)
+    status=models.BooleanField(default=True,null=True,blank=True,editable=True)
 
     def __str__(self):
         return self.Barcode_no

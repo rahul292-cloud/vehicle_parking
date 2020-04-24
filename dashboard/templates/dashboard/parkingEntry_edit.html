@@ -1,0 +1,89 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}
+Parking Entry Edit
+{% endblock %}
+
+{% block content %}
+<div class="app-title">
+    <div>
+        <h1><i class="fa fa-edit"></i> Edit Parking Entry</h1>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <!--            <h3 class="tile-title">New Category Data</h3>-->
+            <div class="tile-body">
+                <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group row">
+
+                        <div class="form-group col-lg-7">
+                            <label for="exampleInputBarcode">Barcode Number</label>
+                            <div id="exampleInputBarcode" name="barcode">
+                                {{UpdateparkingEntry.user_details}}
+                            </div>
+                        </div>
+
+                        <div class="form-group col-lg-7">
+                            <label for="exampleInputBarcode">Barcode Number</label>
+                            <div id="exampleInputDate" name="barcode">
+                                {{UpdateparkingEntry.entry_date}}
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-7">
+                            <label for="exampleInputBarcode">Barcode Number</label>
+                            <div id="exampleInputTime" name="barcode">
+                                {{UpdateparkingEntry.entry_time}}
+                            </div>
+                        </div>
+
+
+                        <!--                        <div class="form-group col-lg-7">-->
+                        <!--                            <label for="exampleInputBarcode">Barcode Number</label>-->
+                        <!--                            <div id="exampleInputBarcode" name="parking_slot">-->
+                        <!--                                <select name="barcode" id="barcode" class="form-control form-control-sm">-->
+                        <!--                                    <option value="0">Select Barcode Number</option>-->
+                        <!--                                    {% for item in barcode %}-->
+                        <!--                                    <option value="{{item.id}}">{{item.Barcode_no}}</option>-->
+                        <!--                                    {% endfor %}-->
+                        <!--                                </select>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
+                        <!--                        <div class="form-group col-lg-7">-->
+                        <!--                            <label for="exampleInputDate">Entry Date</label>-->
+                        <!--                            <div id="exampleInputDate">-->
+                        <!--                                <input type="date" class="form-control" name="entrydate"/>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="form-group col-lg-7">-->
+                        <!--                            <label for="exampleInputTime">Entry Time</label>-->
+                        <!--                            <div id="exampleInputTime">-->
+                        <!--                                <input type='time' class="form-control" name="entrytime"/>-->
+
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
+                    </div>
+                    <div class="tile-footer">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-3">
+                                <button class="btn btn-primary" type="submit"><i
+                                        class="fa fa-fw fa-lg fa-check-circle"></i>Update
+                                </button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="#"
+                                                              onClick="window.location.reload();">
+                                <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <div class="clearix"></div>
+</div>
+
+{% endblock %}

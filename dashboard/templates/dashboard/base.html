@@ -107,73 +107,70 @@
         </div>
     </div>
     <ul class="app-menu">
-        <li><a class="app-menu__item active" href="dashboard.html"><i class="app-menu__icon fa fa-dashboard"></i><span
+        <li><a class="app-menu__item active" href="{%url 'dashboard'%}"><i
+                class="app-menu__icon fa fa-dashboard"></i><span
                 class="app-menu__label">Dashboard</span></a></li>
+
+
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
-                class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Category</span><i
+                class="app-menu__icon fa fa-slideshare"></i><span class="app-menu__label">Category</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 <li><a class="treeview-item" href="{% url 'category'%}"><i class="icon fa fa-circle-o"></i>
                     Add</a></li>
-                <li><a class="treeview-item" href="https://fontawesome.com/v4.7.0/icons/" target="_blank"
-                       rel="noopener"><i class="icon fa fa-circle-o"></i>Manage</a></li>
+                <li><a class="treeview-item" href="{% url 'categoryView' %}" rel="noopener"><i
+                        class="icon fa fa-circle-o"></i>Manage</a></li>
 
             </ul>
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
-                class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Parking Slot</span><i
+                class="app-menu__icon fa fa-building"></i><span class="app-menu__label">Parking Slot</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 <li><a class="treeview-item" href="{% url 'parkingSlot'%}"><i class="icon fa fa-circle-o"></i>
                     Add</a></li>
-                <li><a class="treeview-item" href="https://fontawesome.com/v4.7.0/icons/" target="_blank"
-                       rel="noopener"><i class="icon fa fa-circle-o"></i>Manage</a></li>
+
+                <li><a class="treeview-item" href="{% url 'parkingSlotView'%}"><i class="icon fa fa-circle-o"></i>
+                    Manager</a></li>
 
             </ul>
         </li>
-
+        <li><a class="app-menu__item" href="{% url 'vehicle' %}"><i class="app-menu__icon fa fa-file-code-o"></i><span
+                class="app-menu__label">Vehicle Details</span></a></li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
-                class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Book Vehicle</span><i
+                class="app-menu__icon fa fa-plus-circle"></i><span class="app-menu__label">Book Vehicle</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
-                <li><a class="treeview-item" href="{% url 'bookVehicle' %}"><i class="icon fa fa-circle-o"></i>Add</a></li>
-                <li><a class="treeview-item" href="{% url 'viewVehicle' %}"><i class="icon fa fa-circle-o"></i>Manage</a></li>
+                <li><a class="treeview-item" href="{% url 'bookVehicle' %}"><i class="icon fa fa-circle-o"></i>Add</a>
+                </li>
+                <li><a class="treeview-item" href="{% url 'viewVehicle' %}"><i
+                        class="icon fa fa-circle-o"></i>Manage</a></li>
             </ul>
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview">
-            <i class="app-menu__icon fa fa-rupee" aria-hidden="true"></i><span class="app-menu__label">Parking Entry</span>
+            <i class="app-menu__icon fa fa-car" aria-hidden="true"></i><span
+                class="app-menu__label">Parking Entry</span>
             <i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 <li><a class="treeview-item" href="{% url 'parkingEntry' %}"><i class="icon fa fa-circle-o"></i>
                     Add</a></li>
-                <li><a class="treeview-item" href=""><i class="icon fa fa-circle-o"></i>Day Book
-                    Entry's</a></li>
+                <li><a class="treeview-item" href="{% url 'parkingEntryView'%}"><i class="icon fa fa-circle-o"></i>Manage</a>
+                </li>
             </ul>
         </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
-                class="app-menu__icon fa fa-file-text"></i><span class="app-menu__label">Pages</span><i
+                class="app-menu__icon fa fa-times-circle""></i><span class="app-menu__label">Parking Exit</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
-                <li><a class="treeview-item" href="blank-page.html"><i class="icon fa fa-circle-o"></i> Blank Page</a>
+                <li><a class="treeview-item" href="{% url 'parkingExit' %}"><i class="icon fa fa-circle-o"></i>
+                    Add</a></li>
+                <li><a class="treeview-item" href="{% url 'parkingExitView'%}"><i class="icon fa fa-circle-o"></i>Manage</a>
                 </li>
-                <li><a class="treeview-item" href="page-login.html"><i class="icon fa fa-circle-o"></i> Login Page</a>
-                </li>
-                <li><a class="treeview-item" href="page-lockscreen.html"><i class="icon fa fa-circle-o"></i> Lockscreen
-                    Page</a></li>
-                <li><a class="treeview-item" href="page-user.html"><i class="icon fa fa-circle-o"></i> User Page</a>
-                </li>
-                <li><a class="treeview-item" href="page-invoice.html"><i class="icon fa fa-circle-o"></i> Invoice
-                    Page</a></li>
-                <li><a class="treeview-item" href="page-calendar.html"><i class="icon fa fa-circle-o"></i> Calendar Page</a>
-                </li>
-                <li><a class="treeview-item" href="page-mailbox.html"><i class="icon fa fa-circle-o"></i> Mailbox</a>
-                </li>
-                <li><a class="treeview-item" href="page-error.html"><i class="icon fa fa-circle-o"></i> Error Page</a>
-                </li>
+
             </ul>
         </li>
         <li><a class="app-menu__item" href="docs.html"><i class="app-menu__icon fa fa-file-code-o"></i><span
-                class="app-menu__label">Docs</span></a></li>
+                class="app-menu__label">Report</span></a></li>
     </ul>
 </aside>
 
@@ -193,6 +190,9 @@
 <!-- The javascript plugin to display page loading on top-->
 
 <script src="{% static 'dashboard/js/plugins/pace.min.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'dashboard/js/plugins/bootstrap-notify.min.js'%}"></script>
+<script type="text/javascript" src="{% static 'dashboard/js/plugins/sweetalert.min.js'%}"></script>
 <!-- Page specific javascripts-->
 {% endblock %}
 <script type="text/javascript">
@@ -244,6 +244,14 @@
 
 
 
+
+
+
+
+
+
+
+
 </script>
 <!-- Google analytics script-->
 <script type="text/javascript">
@@ -255,6 +263,14 @@
       	ga('create', 'UA-72504830-1', 'auto');
       	ga('send', 'pageview');
       }
+
+
+
+
+
+
+
+
 
 </script>
 </body>

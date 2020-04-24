@@ -1,13 +1,12 @@
 {% extends 'dashboard/base.html' %}
 {% block title %}
-Category
+Parking Slot Edit
 {% endblock %}
 
 {% block content %}
 <div class="app-title">
     <div>
-        <h1><i class="fa fa-plus"></i> Add Parking Slot</h1>
-<!--        <h1><i class="fa fa-edit"></i> Add Parking Slot</h1>-->
+        <h1><i class="fa fa-edit"></i> Edit Parking Slot</h1>
 
     </div>
 </div>
@@ -19,19 +18,18 @@ Category
                 <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group row">
-                        <div class="form-group col-lg-5">
+                        <div class="form-group col-lg-7">
                             <label for="exampleInputName">Slot Name</label>
                             <div id="exampleInputName" name="name">
-                                {{form.slot_name}}
+                                {{Updateparking.slot_name}}
                             </div>
                         </div>
-
-<!--                        <div class="form-group col-lg-12">-->
-<!--                            <label for="exampleInputName">Slot Status</label>-->
-<!--                            <div id="exampleInputBoolean" name="name">-->
-<!--                                {{form.slot_status}}-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <div class="form-group col-lg-7">
+                            <label for="exampleInputStatus">Status</label>
+                            <div id="exampleInputStatus" name="name">
+                                {{Updateparking.slot_status}}
+                            </div>
+                        </div>
 
 
                     </div>
@@ -39,7 +37,7 @@ Category
                         <div class="row">
                             <div class="col-md-8 col-md-offset-3">
                                 <button class="btn btn-primary" type="submit"><i
-                                        class="fa fa-fw fa-lg fa-check-circle"></i>Submit
+                                        class="fa fa-fw fa-lg fa-check-circle"></i>Update
                                 </button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="#"
                                                               onClick="window.location.reload();">
                                 <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>

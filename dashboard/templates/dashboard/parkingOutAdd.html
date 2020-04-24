@@ -1,13 +1,12 @@
 {% extends 'dashboard/base.html' %}
 {% block title %}
-Category
+Parking Exit
 {% endblock %}
 
 {% block content %}
 <div class="app-title">
     <div>
-        <h1><i class="fa fa-plus"></i> Add Parking Slot</h1>
-<!--        <h1><i class="fa fa-edit"></i> Add Parking Slot</h1>-->
+        <h1><i class="fa fa-plus"></i> Add Parking Exit</h1>
 
     </div>
 </div>
@@ -19,20 +18,32 @@ Category
                 <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group row">
-                        <div class="form-group col-lg-5">
-                            <label for="exampleInputName">Slot Name</label>
-                            <div id="exampleInputName" name="name">
-                                {{form.slot_name}}
+
+                        <div class="form-group col-lg-7">
+                            <label for="exampleInputBarcode">Barcode Number</label>
+                            <div id="exampleInputBarcode" name="parking_slot">
+                                <select name="barcode" id="barcode" class="form-control form-control-sm">
+                                    <option value="0">Select Barcode Number</option>
+                                    {% for item in barcode %}
+                                    <option value="{{item.id}}">{{item.Barcode_no}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
 
-<!--                        <div class="form-group col-lg-12">-->
-<!--                            <label for="exampleInputName">Slot Status</label>-->
-<!--                            <div id="exampleInputBoolean" name="name">-->
-<!--                                {{form.slot_status}}-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <div class="form-group col-lg-7">
+                            <label for="exampleInputDate">Exit Date</label>
+                            <div id="exampleInputDate">
+                                <input type="date" class="form-control" name="exitdate"/>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-7">
+                            <label for="exampleInputTime">Exit Time</label>
+                            <div id="exampleInputTime">
+                                <input type='time' class="form-control" name="exittime"/>
 
+                            </div>
+                        </div>
 
                     </div>
                     <div class="tile-footer">
@@ -53,4 +64,5 @@ Category
     </div>
     <div class="clearix"></div>
 </div>
+
 {% endblock %}

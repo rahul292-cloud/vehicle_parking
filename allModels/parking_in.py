@@ -7,5 +7,5 @@ class ParkingIn(BaseModel):
     entry_date = models.DateField(null=False, blank=False)
     entry_time = models.TimeField(null=False, blank=False)
 
-    def __str__(self):
-        return self.user_details
+    # def __str__(self):
+    #     return self.user_details
