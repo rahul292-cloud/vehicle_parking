@@ -271,6 +271,8 @@ class ParkingEntry(View):
     parking_entry_forms =ParkingEntryForm
     parking_entry_model = parking_in.ParkingIn
     parking_entry_add_templates = 'dashboard/parking_entry.html'
+    vehicle_model = add_vehicle.UserVehicle
+
     parking_entry_view_templates = 'dashboard/parkingEntry_view.html'
 
     def get(self, request, *args, **kwargs):
@@ -281,14 +283,37 @@ class ParkingEntry(View):
             model=self.parking_entry_model.objects.all()
             return render(request,self.parking_entry_view_templates,{'parkingView':model})
 
+    # def get(self, request, *args, **kwargs):
+    #     if 'parkingEntry' in kwargs:
+    #         available_barcode = add_vehicle.UserVehicle.objects.all()
+    #         return render(request, self.parking_entry_add_templates, {'form': self.parking_entry_add_templates,'barcode':available_barcode})
+
     def post(self,request,*args,**kwargs):
         barcode=request.POST['barcode']
+        print(barcode)
         entrydate=request.POST['entrydate']
         entrytime=request.POST['entrytime']
         barcode_no = add_vehicle.UserVehicle.objects.get(pk=barcode)
 
         entrysave = parking_in.ParkingIn.objects.create(
                     user_details=barcode_no, entry_date=entrydate, entry_time=entrytime)
+        barcode_no = self.vehicle_model.objects.get(pk=barcode)
+        print(barcode_no)
+        # barcode_no = self.parking_entry_model.objects.get(pk=barcode)
+        # print(barcode_no)
+        # barcode_no = get_object_or_404(self.parking_entry_model, pk=barcode)
+
+        # barcode_no = add_vehicle.UserVehicle.objects.values('Barcode_no','id')
+        # print(barcode_no)
+        # return render(request,self.parking_entry_add_templates,{'error': 'Barcode has already taken'})
+
+              # return render(request, self.parking_entry_add_templates, {'error': 'Barcode has already entered'})
+        if forms.is_valid():
+
+           self.parking_entry_model.objects.create(
+                    user_details=barcode_no, entry_date=entrydate, entry_time=entrytime)
+
+           return redirect(to='parkingEntry')
 
         add_vehicle.UserVehicle.objects.filter(id=barcode).update(
             status=False

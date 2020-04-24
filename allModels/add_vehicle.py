@@ -16,4 +16,4 @@ class UserVehicle(BaseModel):
     status=models.BooleanField(default=True,null=True,blank=True,editable=True)
 
     def __str__(self):
-        return self.Barcode_no
+        return str(self.Barcode_no)
