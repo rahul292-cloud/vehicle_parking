@@ -21,6 +21,7 @@ urlpatterns = [
 
     path('booking', views.Booking.as_view(), {'booking': ''}, name='booking'),
     path('bookingView', views.Booking.as_view(), {'bookingView': ''}, name='bookingView'),
+    path('barcode_details', views.Booking.as_view(), {'barcode_details': ''}, name='barcode_details'),
 
     path('bookVehicle', views.BookVehicle.as_view(), {'bookVehicle': ''}, name='bookVehicle'),
     path('viewVehicle', views.BookVehicle.as_view(), {'viewVehicle': ''}, name='viewVehicle'),

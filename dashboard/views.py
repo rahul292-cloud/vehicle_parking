@@ -1,16 +1,21 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from .forms import *
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
-from allModels import category, add_vehicle, parking_slot,parking_in,parkingOut,vehicle_details,booking
+from allModels import category, add_vehicle, parking_slot,parking_in,parkingOut,vehicle_details,booking, vehicle_details
 from django.shortcuts import get_object_or_404
 import openpyxl
 import xlrd
+from django.db.models import (Case, CharField, Count, DateTimeField,
+                              ExpressionWrapper, F, FloatField, Func, Max, Min,
+                              Prefetch, Q, Sum, Value, When, Subquery)
 
 # Create your views here.
 def register(request):
     return render(request, 'dashboard/register.html')
+
 
 # class Vehicle_Excel(View):
 #     vehicle_details_form=VehicleDetailsForm
@@ -271,6 +276,22 @@ class Booking(View):
     booking_add_templates = 'dashboard/bookingAdd.html'
     booking_view_mplates = 'dashboard/bookingView.html'
 
+    def get_data(self, request, *args, **kwargs):
+        print("coll")
+        if 'barcode_details' in kwargs:
+            print(request.POST.get('barcode_details'))
+            # data = booking.BookVehicle.objects.filter(barcode_id=request.POST.get('barcode_details'))
+            data = vehicle_details.VehicleDetail.objects.filter(pk=request.POST.get('barcode_details')).values(
+                'barcode_number', 'vehicle_number', 'chessis_number', 'vehicle_model', 'variants', 'color',
+                'status'
+            )
+            #     .annotate(
+            #     client_booking_date=ExpressionWrapper(Func(F('date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
+            #                                     output_field=CharField()),
+            # )
+
+            return list(data)
+
     def get(self, request, *args, **kwargs):
         if 'booking' in kwargs:
             available_slot = parking_slot.Parking_slot.objects.filter(slot_status=True)
@@ -284,6 +305,13 @@ class Booking(View):
             return render(request, self.booking_view_mplates, {'form': model})
 
     def post(self, request, *args, **kwargs):
+        print("okk")
+
+        if 'barcode_details' in kwargs:
+            data = self.get_data(request, barcode_details='')
+            print(data)
+            return JsonResponse(data, safe=False)
+
         forms = self.booking_forms(request.POST)
 
 

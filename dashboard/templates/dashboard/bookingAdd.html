@@ -1,6 +1,7 @@
 {% extends 'dashboard/base.html' %}
 {% block title %}
 Booking Add
+{% load static %}
 {% endblock %}
 
 {% block content %}
@@ -21,7 +22,7 @@ Booking Add
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputName">Barcode Number</label>
-                            <div id="exampleInputName" name="name">
+                            <div id="exampleInputName" name="name" onChange="my_details()">
                                 {{form.barcode}}
 <!--                                <select name="slot" id="barcode" class="form-control form-control-sm">-->
 <!--                                    <option value="0">Select Barcode</option>-->
@@ -111,6 +112,7 @@ Booking Add
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
+<script src="{% static 'dashboard/datatables/1.10.20/js/jquery.dataTables.min.js' %}"></script>
 
 <script>
     $(document).ready(function()
@@ -122,6 +124,33 @@ Booking Add
 
 
 
+function my_details(){
+
+        var barcode_details = $(`#id_barcode`).val()
+        console.log(barcode_details)
+
+        $.ajax({
+            url: '{% url 'barcode_details' %}',
+            method: 'POST',
+            data: {'barcode_details': barcode_details},
+            headers: {"X-CSRFToken": '{{ csrf_token }}'},
+            success: function(data, status, jqXHR){
+                console.log(status, data)
+                if(jqXHR.status == 200){
+                    console.log(data[0]['billing_state']);
+                    $(`#id_chessis_no`).val(data[0]['chessis_number'])
+                    $(`#id_variants`).val(data[0]['variants'])
+                    $(`#id_vehicle_no`).val(data[0]['vehicle_number'])
+                    $(`#id_vehicle_model`).val(data[0]['vehicle_model'])
+                    $(`#id_color`).val(data[0]['color'])
+
+
+            }
+            }
+        })
+
+
+     }
 
 
 
