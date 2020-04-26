@@ -2,7 +2,7 @@ import os
 # from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth.models import User
 from django import forms
-from allModels import category,add_vehicle,parking_slot,parking_in,parkingOut
+from allModels import category,add_vehicle,parking_slot,parking_in,parkingOut,vehicle_details,booking
     # ,,parking_out,
 # from django.forms import ModelForm
 
@@ -19,7 +19,7 @@ class CategoryForm(forms.ModelForm):
 
         widgets={
             'category_name': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
-            'status': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            # 'status': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
 
         }
 #
@@ -50,8 +50,12 @@ class ParkingEntryForm(forms.ModelForm):
             # 'entry_time': forms.DateTimeField(),
         }
 
-#
-#
+
+class VehicleDetailsForm(forms.Form):
+    # input_excel = forms.FileField(required=True, label=u"Upload the Excel file.")
+    input_excel = forms.FileField(required=True)
+
+
 class ParkingOutForm(forms.ModelForm):
     class Meta:
         model=parkingOut.ParkingOut
@@ -67,6 +71,25 @@ class ParkingOutForm(forms.ModelForm):
         }
 #
 #
+class BookVehicleForm(forms.ModelForm):
+    class Meta:
+        model=booking.BookVehicle
+        fields=[
+            'barcode','vehicle_no','chessis_no','vehicle_model','variants','color','parking_slot','status'
+            ]
+        widgets={
+            'barcode': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'vehicle_no': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'chessis_no': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'vehicle_model': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'variants': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'color': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'parking_slot': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+
+        }
+
+
+
 class UserVehicleForm(forms.ModelForm):
     class Meta:
         model=add_vehicle.UserVehicle

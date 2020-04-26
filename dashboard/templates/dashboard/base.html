@@ -112,6 +112,8 @@
                 class="app-menu__label">Dashboard</span></a></li>
 
 
+        <li><a class="app-menu__item" href="{% url 'vehicle' %}"><i class="app-menu__icon fa fa-file-code-o"></i><span
+                class="app-menu__label">Vehicle Details</span></a></li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
                 class="app-menu__icon fa fa-slideshare"></i><span class="app-menu__label">Category</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
@@ -135,8 +137,30 @@
 
             </ul>
         </li>
-        <li><a class="app-menu__item" href="{% url 'vehicle' %}"><i class="app-menu__icon fa fa-file-code-o"></i><span
-                class="app-menu__label">Vehicle Details</span></a></li>
+
+
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
+                class="app-menu__icon fa fa-plus-circle"></i><span class="app-menu__label">Booking</span><i
+                class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                <li><a class="treeview-item" href="{% url 'booking' %}"><i class="icon fa fa-circle-o"></i>Add</a>
+                </li>
+                <li><a class="treeview-item" href="{% url 'bookingView' %}"><i
+                        class="icon fa fa-circle-o"></i>Manage</a></li>
+            </ul>
+        </li>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
+                class="app-menu__icon fa fa-times-circle"></i><span class="app-menu__label">Parking Exit</span><i
+                class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                <li><a class="treeview-item" href="{% url 'parkingExit' %}"><i class="icon fa fa-circle-o"></i>
+                    Add</a></li>
+                <li><a class="treeview-item" href="{% url 'parkingExitView'%}"><i class="icon fa fa-circle-o"></i>Manage</a>
+                </li>
+
+            </ul>
+        </li>
+
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
                 class="app-menu__icon fa fa-plus-circle"></i><span class="app-menu__label">Book Vehicle</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
@@ -158,17 +182,17 @@
                 </li>
             </ul>
         </li>
-        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
-                class="app-menu__icon fa fa-times-circle""></i><span class="app-menu__label">Parking Exit</span><i
-                class="treeview-indicator fa fa-angle-right"></i></a>
-            <ul class="treeview-menu">
-                <li><a class="treeview-item" href="{% url 'parkingExit' %}"><i class="icon fa fa-circle-o"></i>
-                    Add</a></li>
-                <li><a class="treeview-item" href="{% url 'parkingExitView'%}"><i class="icon fa fa-circle-o"></i>Manage</a>
-                </li>
+        <!--        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i-->
+        <!--                class="app-menu__icon fa fa-times-circle""></i><span class="app-menu__label">Parking Exit</span><i-->
+        <!--                class="treeview-indicator fa fa-angle-right"></i></a>-->
+        <!--            <ul class="treeview-menu">-->
+        <!--                <li><a class="treeview-item" href="{% url 'parkingExit' %}"><i class="icon fa fa-circle-o"></i>-->
+        <!--                    Add</a></li>-->
+        <!--                <li><a class="treeview-item" href="{% url 'parkingExitView'%}"><i class="icon fa fa-circle-o"></i>Manage</a>-->
+        <!--                </li>-->
 
-            </ul>
-        </li>
+        <!--            </ul>-->
+        <!--        </li>-->
         <li><a class="app-menu__item" href="docs.html"><i class="app-menu__icon fa fa-file-code-o"></i><span
                 class="app-menu__label">Report</span></a></li>
     </ul>
@@ -252,6 +276,11 @@
 
 
 
+
+
+
+
+
 </script>
 <!-- Google analytics script-->
 <script type="text/javascript">
@@ -263,6 +292,11 @@
       	ga('create', 'UA-72504830-1', 'auto');
       	ga('send', 'pageview');
       }
+
+
+
+
+
 
 
 

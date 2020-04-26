@@ -3,16 +3,25 @@ from . import views
 
 urlpatterns = [
     path('index', views.index, name='index'),
-    path('vehicle', views.vehicle, name='vehicle'),
+    path('vehicle', views.Vehicle.as_view(),{'vehicle':''}, name='vehicle'),
+    path('vehicleView', views.Vehicle.as_view(),{'vehicleView':''}, name='vehicleView'),
+
+    # path('vehicle_excel',views.VehicleExcel.as_view(),{'vehicle_excel':''},name='vehicle_excel'),
+    # path('vehicle_excel', views.Vehicle_Excel.as_view(), {'vehicle_excel': ''}, name='vehicle_excel'),
+
     path('register', views.register, name='register'),
-    # path('Dashboard', views.Dashboard, name='dashboard'),
     path('dashboard', views.Dashboard.as_view(), {'dashboard': ''}, name='dashboard'),
 
     path('', views.LoginPage.as_view(), {'login': ''}, name='login'),
 
-    path('category', views.Category.as_view(), {'category': ''}, name='category'),
-    path('categoryView', views.Category.as_view(), {'categoryView': ''}, name='categoryView'),
+    # path('category', views.Category.as_view(), {'category': ''}, name='category'),
+    path('categoryView', views.CategoryAdd.as_view(), {'categoryView': ''}, name='categoryView'),
+    path('category', views.CategoryAdd.as_view(), {'category': ''}, name='category'),
     path('categoryEdit/<int:object_id>', views.CategoryEdit.as_view(), {'categoryEdit': ''}, name="categoryEdit"),
+
+    path('booking', views.Booking.as_view(), {'booking': ''}, name='booking'),
+    path('bookingView', views.Booking.as_view(), {'bookingView': ''}, name='bookingView'),
+    path('barcode_details', views.Booking.as_view(), {'barcode_details': ''}, name='barcode_details'),
 
     path('bookVehicle', views.BookVehicle.as_view(), {'bookVehicle': ''}, name='bookVehicle'),
     path('viewVehicle', views.BookVehicle.as_view(), {'viewVehicle': ''}, name='viewVehicle'),

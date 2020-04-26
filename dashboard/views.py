@@ -1,19 +1,90 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from .forms import *
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
-from allModels import category, add_vehicle, parking_slot,parking_in,parkingOut
+from allModels import category, add_vehicle, parking_slot,parking_in,parkingOut,vehicle_details,booking, vehicle_details
 from django.shortcuts import get_object_or_404
 import openpyxl
+import xlrd
+from django.db.models import (Case, CharField, Count, DateTimeField,
+                              ExpressionWrapper, F, FloatField, Func, Max, Min,
+                              Prefetch, Q, Sum, Value, When, Subquery)
 
 # Create your views here.
 def register(request):
     return render(request, 'dashboard/register.html')
 
-# def vehicle(request):
-#     if "GET" == request.method:
-#         return render(request, 'dashboard/vehicleDetails.html', {})
+
+# class Vehicle_Excel(View):
+#     vehicle_details_form=VehicleDetailsForm
+#     vehicle_details_model=vehicle_details.VehicleDetails
+#     vehicle_details_templates="dashboard/vehicleDetails.html"
+#
+#     def get(self, request, *args, **kwargs):
+#         if 'vehicle_excel' in kwargs:
+#             return render(request, self.vehicle_details_templates, {'form': self.vehicle_details_form})
+
+
+    # def get(self, request, *args, **kwargs):
+    #     if 'vehicle_excel' in kwargs:
+    #         return render(request, self.vehicle_details_templates, {'form': self.vehicle_details_form()})
+
+class Vehicle(View):
+    vehicle_details_form = VehicleDetailsForm
+    vehicle_details_templates = "dashboard/vehicleDetails.html"
+    # vehicle_details_templates = "dashboard/vehicle_view.html"
+    model=vehicle_details.VehicleDetail
+    def get(self,request,*args,**kwargs):
+        if 'vehicle' in kwargs:
+          allvehicle=self.model.objects.all()
+          return render(request,self.vehicle_details_templates, {'form':self.vehicle_details_form(),'model':allvehicle})
+
+    def post(self, request, *args, **kwargs):
+        form = self.vehicle_details_form(request.POST, request.FILES)
+        if form.is_valid():
+            input_excel = request.FILES['input_excel']
+            print(input_excel)
+            book = xlrd.open_workbook(file_contents=input_excel.read())
+            sheet = book.sheet_by_index(0)
+            print(sheet)
+            # data = [[sheet.cell_value(r, c) for c in range(sheet.ncols)] for r in range(sheet.nrows)]
+            barcode_number= []
+            vehicle_number= []
+            chessis_number= []
+            vehicle_model= []
+            variants= []
+            color= []
+            # date= []
+            print(barcode_number)
+
+            for i in range(sheet.nrows):
+                barcode_number.append(sheet.cell_value(i, 0))
+                vehicle_number.append(sheet.cell_value(i, 1))
+                chessis_number.append(sheet.cell_value(i, 2))
+                vehicle_model.append(sheet.cell_value(i, 3))
+                variants.append(sheet.cell_value(i, 4))
+                color.append(sheet.cell_value(i, 5))
+                # date.append(sheet.cell_value(i, 6))
+
+            barcode_number.pop(0)
+            vehicle_number.pop(0)
+            chessis_number.pop(0)
+            vehicle_model.pop(0)
+            variants.pop(0)
+            color.pop(0)
+            # date.pop(0)
+
+
+            for i in range(len(barcode_number)):
+                self.model.objects.get_or_create(barcode_number=barcode_number[i], vehicle_number=vehicle_number[i],
+                                                 chessis_number=chessis_number[i], vehicle_model=vehicle_model[i], variants=variants[i],
+                                                 color=color[i],status=True
+                                                 )
+            return redirect(to='vehicle')
+
+
 #     else:
 #         excel_file = request.FILES["excel_file"]
 #
@@ -47,8 +118,6 @@ def register(request):
 #             excel_data.append(row_data)
 #
 #         return render(request, 'dashboard/vehicleDetails.html', {"excel_data": excel_data})
-
-
 
 
 def index(request):
@@ -98,7 +167,7 @@ class Dashboard(View):
             return render(request, 'dashboard/Dashboard.html', context)
 
 
-class Category(View):
+class CategoryAdd(View):
     category_forms = CategoryForm
     category_model = category.Category
     category_add_templates = 'dashboard/categoryAdd.html'
@@ -119,9 +188,16 @@ class Category(View):
         forms = self.category_forms(request.POST)
         if forms.is_valid():
             category_name = forms.cleaned_data.get('category_name')
-            self.category_model.objects.create(category_name=category_name)
+            self.category_model.objects.create(
+                category_name=category_name
+            )
             # messages.success(request,'successfully add to database ')
             return redirect(to='category')
+        # if forms.is_valid():
+        #     category_name = forms.cleaned_data.get('category_name')
+        #     self.category_model.objects.create(category_name=category_name)
+        #     # messages.success(request,'successfully add to database ')
+        #     return redirect(to='categoryView')
 
 
 
@@ -189,7 +265,82 @@ class ParkingSlotEdit(View):
             # messages.success(request, 'successfully add to database ')
             return redirect(to='parkingSlotView')
 
-#
+#------------------new
+
+
+
+class Booking(View):
+    booking_forms = BookVehicleForm
+    booking_model = booking.BookVehicle
+    parking_model = parking_slot.Parking_slot
+    booking_add_templates = 'dashboard/bookingAdd.html'
+    booking_view_mplates = 'dashboard/bookingView.html'
+
+    def get_data(self, request, *args, **kwargs):
+        print("coll")
+        if 'barcode_details' in kwargs:
+            print(request.POST.get('barcode_details'))
+            # data = booking.BookVehicle.objects.filter(barcode_id=request.POST.get('barcode_details'))
+            data = vehicle_details.VehicleDetail.objects.filter(pk=request.POST.get('barcode_details')).values(
+                'barcode_number', 'vehicle_number', 'chessis_number', 'vehicle_model', 'variants', 'color',
+                'status'
+            )
+            #     .annotate(
+            #     client_booking_date=ExpressionWrapper(Func(F('date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
+            #                                     output_field=CharField()),
+            # )
+
+            return list(data)
+
+    def get(self, request, *args, **kwargs):
+        if 'booking' in kwargs:
+            available_slot = parking_slot.Parking_slot.objects.filter(slot_status=True)
+            barcode_slot = vehicle_details.VehicleDetail.objects.all()
+            # barcode=
+            return render(request, self.booking_add_templates, {'form': self.booking_forms(), 'available_slot':available_slot,'barcode_slots':barcode_slot})
+
+
+        elif 'bookingView' in kwargs:
+            model = self.booking_model.objects.all()
+            return render(request, self.booking_view_mplates, {'form': model})
+
+    def post(self, request, *args, **kwargs):
+        print("okk")
+
+        if 'barcode_details' in kwargs:
+            data = self.get_data(request, barcode_details='')
+            print(data)
+            return JsonResponse(data, safe=False)
+
+        forms = self.booking_forms(request.POST)
+
+
+
+        parkingID = request.POST['slot']
+        selected_slot = self.parking_model.objects.get(pk=parkingID)
+        if forms.is_valid():
+            categoty_name = forms.cleaned_data.get('categoty_name')
+            Barcode_no = forms.cleaned_data.get('Barcode_no')
+            owner_name = forms.cleaned_data.get('owner_name')
+            owner_contact = forms.cleaned_data.get('owner_contact')
+            vehicle_model = forms.cleaned_data.get('vehicle_model')
+            vehicle_no = forms.cleaned_data.get('vehicle_no')
+            chessis_no = forms.cleaned_data.get('chessis_no')
+            # parking_slot = forms.cleaned_data.get('parking_slot')
+            self.booking_model.objects.create(categoty_name=categoty_name, Barcode_no=Barcode_no,owner_name=owner_name,
+                                              owner_contact=owner_contact,
+                                              vehicle_model=vehicle_model, vehicle_no=vehicle_no, chessis_no=chessis_no,
+                                              parking_slot=selected_slot)
+            # messages.success(request, 'successfully add to database ')
+            self.parking_model.objects.filter(pk=parkingID).update(
+                slot_status=False
+            )
+
+            return redirect(to='bookVehicle')
+
+
+
+
 class BookVehicle(View):
     vehicle_forms = UserVehicleForm
     vehicle_model = add_vehicle.UserVehicle
@@ -268,7 +419,7 @@ class EditVehicle(View):
             # )
             return redirect(to='viewVehicle')
 
-
+# ----------------------------end old
 class ParkingEntry(View):
     parking_entry_forms =ParkingEntryForm
     parking_entry_model = parking_in.ParkingIn
