@@ -1,29 +1,106 @@
 {% extends 'dashboard/base.html' %}
 {% block title %}
- Excel file upload and processing
+Excel file upload and processing
 {% endblock %}
 
 {% block content %}
-        <form action="{% url 'vehicle' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="file"
-                   title="Upload excel file"
-                   name="excel_file"
-                   style="border: 1px solid black; padding: 5px;"
-                   required="required">
-            <p>
-            <input type="submit"
-                   value="Upload"
-                   style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
-        </form>
+<!--        <form action="{% url 'vehicle' %}" method="post" enctype="multipart/form-data">-->
+<!--            {% csrf_token %}-->
+<!--            <input type="file"-->
+<!--                   title="Upload excel file"-->
+<!--                   name="excel_file"-->
+<!--                   style="border: 1px solid black; padding: 5px;"-->
+<!--                   required="required">-->
+<!--            <p>-->
+<!--            <input type="submit"-->
+<!--                   value="Upload"-->
+<!--                   style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">-->
+<!--        </form>-->
 
+<!--        <p></p>-->
+<!--        <hr>-->
+
+<!--        {% for row in excel_data %}-->
+<!--            {% for cell in row %}-->
+<!--                {{ cell }}&nbsp;&nbsp;-->
+<!--            {% endfor %}-->
+<!--            <br>-->
+<!--        {% endfor %}-->
+
+<div class="app-title">
+    <div>
+        <h1><i class="fa fa-edit"></i> Vehicle Details</h1>
         <p></p>
-        <hr>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label class="control-label col-md-3">{{form}}</label>
+                        <div class="col-md-8">
 
-        {% for row in excel_data %}
-            {% for cell in row %}
-                {{ cell }}&nbsp;&nbsp;
-            {% endfor %}
-            <br>
-        {% endfor %}
+                        </div>
+                    </div>
+                    <div class="tile-footer">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-3">
+                                <button class="btn btn-primary" type="submit"><i
+                                        class="fa fa-fw fa-lg fa-check-circle"></i>Submit
+                                </button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="#"
+                                                              onClick="window.location.reload();">
+                                <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <div class="clearix"></div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                        <tr>
+
+                            <th>barcode_number</th>
+                            <th>vehicle_number</th>
+                            <th>chessis_number</th>
+                            <th>vehicle_model</th>
+                            <th>variants</th>
+                            <th>color</th>
+                        </tr>
+                        </thead>
+                        {% for vehicle in model %}
+
+                        <tbody>
+                        <tr>
+                            <td>{{vehicle.barcode_number}}</td>
+                            <td>{{vehicle.vehicle_number}}</td>
+                            <td>{{vehicle.chessis_number}}</td>
+                            <td>{{vehicle.vehicle_model}}</td>
+                            <td>{{vehicle.variants}}</td>
+                            <td>{{vehicle.color}}</td>
+                        </tr>
+                        </tbody>
+
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}
