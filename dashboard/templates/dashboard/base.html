@@ -28,6 +28,18 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'dashboard/css/main.css' %}">
 
+
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"-->
+    <!--          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+          integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous"/>
+    <!-- Font Awesome -->
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
     <!-- Main CSS-->
     <!-- Font-icon css-->
 
@@ -114,17 +126,7 @@
 
         <li><a class="app-menu__item" href="{% url 'vehicle' %}"><i class="app-menu__icon fa fa-file-code-o"></i><span
                 class="app-menu__label">Vehicle Details</span></a></li>
-        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
-                class="app-menu__icon fa fa-slideshare"></i><span class="app-menu__label">Category</span><i
-                class="treeview-indicator fa fa-angle-right"></i></a>
-            <ul class="treeview-menu">
-                <li><a class="treeview-item" href="{% url 'category'%}"><i class="icon fa fa-circle-o"></i>
-                    Add</a></li>
-                <li><a class="treeview-item" href="{% url 'categoryView' %}" rel="noopener"><i
-                        class="icon fa fa-circle-o"></i>Manage</a></li>
 
-            </ul>
-        </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
                 class="app-menu__icon fa fa-building"></i><span class="app-menu__label">Parking Slot</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
@@ -153,14 +155,24 @@
                 class="app-menu__icon fa fa-times-circle"></i><span class="app-menu__label">Parking Exit</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
-                <li><a class="treeview-item" href="{% url 'parkingExit' %}"><i class="icon fa fa-circle-o"></i>
+                <li><a class="treeview-item" href="{% url 'exit' %}"><i class="icon fa fa-circle-o"></i>
                     Add</a></li>
                 <li><a class="treeview-item" href="{% url 'parkingExitView'%}"><i class="icon fa fa-circle-o"></i>Manage</a>
                 </li>
 
             </ul>
         </li>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
+                class="app-menu__icon fa fa-slideshare"></i><span class="app-menu__label">Category</span><i
+                class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                <li><a class="treeview-item" href="{% url 'category'%}"><i class="icon fa fa-circle-o"></i>
+                    Add</a></li>
+                <li><a class="treeview-item" href="{% url 'categoryView' %}" rel="noopener"><i
+                        class="icon fa fa-circle-o"></i>Manage</a></li>
 
+            </ul>
+        </li>
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
                 class="app-menu__icon fa fa-plus-circle"></i><span class="app-menu__label">Book Vehicle</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
@@ -213,75 +225,17 @@
 
 <!-- The javascript plugin to display page loading on top-->
 
-<script src="{% static 'dashboard/js/plugins/pace.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+        integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
 
+
+<script src="{% static 'dashboard/js/plugins/pace.min.js' %}"></script>
+<script src="{% static 'dashboard/datatables/1.10.20/js/jquery.dataTables.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'dashboard/js/plugins/bootstrap-notify.min.js'%}"></script>
 <script type="text/javascript" src="{% static 'dashboard/js/plugins/sweetalert.min.js'%}"></script>
+
 <!-- Page specific javascripts-->
 {% endblock %}
-<script type="text/javascript">
-      var data = {
-      	labels: ["January", "February", "March", "April", "May"],
-      	datasets: [
-      		{
-      			label: "My First dataset",
-      			fillColor: "rgba(220,220,220,0.2)",
-      			strokeColor: "rgba(220,220,220,1)",
-      			pointColor: "rgba(220,220,220,1)",
-      			pointStrokeColor: "#fff",
-      			pointHighlightFill: "#fff",
-      			pointHighlightStroke: "rgba(220,220,220,1)",
-      			data: [65, 59, 80, 81, 56]
-      		},
-      		{
-      			label: "My Second dataset",
-      			fillColor: "rgba(151,187,205,0.2)",
-      			strokeColor: "rgba(151,187,205,1)",
-      			pointColor: "rgba(151,187,205,1)",
-      			pointStrokeColor: "#fff",
-      			pointHighlightFill: "#fff",
-      			pointHighlightStroke: "rgba(151,187,205,1)",
-      			data: [28, 48, 40, 19, 86]
-      		}
-      	]
-      };
-      var pdata = [
-      	{
-      		value: 300,
-      		color: "#46BFBD",
-      		highlight: "#5AD3D1",
-      		label: "Complete"
-      	},
-      	{
-      		value: 50,
-      		color:"#F7464A",
-      		highlight: "#FF5A5E",
-      		label: "In-Progress"
-      	}
-      ]
-
-      var ctxl = $("#lineChartDemo").get(0).getContext("2d");
-      var lineChart = new Chart(ctxl).Line(data);
-
-      var ctxp = $("#pieChartDemo").get(0).getContext("2d");
-      var pieChart = new Chart(ctxp).Pie(pdata);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</script>
 <!-- Google analytics script-->
 <script type="text/javascript">
       if(document.location.hostname == 'pratikborsadiya.in') {
@@ -292,6 +246,11 @@
       	ga('create', 'UA-72504830-1', 'auto');
       	ga('send', 'pageview');
       }
+
+
+
+
+
 
 
 

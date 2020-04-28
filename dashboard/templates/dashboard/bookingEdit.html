@@ -74,12 +74,13 @@ Booking Add
                         <div class="form-group col-lg-5">
                             <label for="exampleInputAddress">Parking Slot</label>
                             <div id="exampleInputAddress" name="parking_slot">
-                                <select name="slot" id="slot" class="form-control form-control-sm">
-                                    <option value="0">Select Slot</option>
-                                    {% for item in available_slot %}
-                                    <option value="{{item.id}}">{{item.slot_name}}</option>
-                                    {% endfor %}
-                                </select>
+                                {{form.parking_slot}}
+<!--                                <select name="slot" id="slot" class="form-control form-control-sm">-->
+<!--                                    <option value="0">Select Slot</option>-->
+<!--                                    {% for item in available_slot %}-->
+<!--                                    <option value="{{item.id}}">{{item.slot_name}}</option>-->
+<!--                                    {% endfor %}-->
+<!--                                </select>-->
                             </div>
                         </div>
 
@@ -102,7 +103,7 @@ Booking Add
                         <div class="row">
                             <div class="col-md-8 col-md-offset-3">
                                 <button class="btn btn-primary" type="submit"><i
-                                        class="fa fa-fw fa-lg fa-check-circle"></i>Submit
+                                        class="fa fa-fw fa-lg fa-check-circle"></i>Update
                                 </button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="#"
                                                               onClick="window.location.reload();">
                                 <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>

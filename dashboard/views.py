@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from django.contrib.auth.models import User
 from .forms import *
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
@@ -13,23 +14,99 @@ from django.db.models import (Case, CharField, Count, DateTimeField,
                               Prefetch, Q, Sum, Value, When, Subquery)
 
 # Create your views here.
-def register(request):
-    return render(request, 'dashboard/register.html')
+
+def index(request):
+    return render(request, 'dashboard/base.html')
 
 
-# class Vehicle_Excel(View):
-#     vehicle_details_form=VehicleDetailsForm
-#     vehicle_details_model=vehicle_details.VehicleDetails
-#     vehicle_details_templates="dashboard/vehicleDetails.html"
-#
-#     def get(self, request, *args, **kwargs):
-#         if 'vehicle_excel' in kwargs:
-#             return render(request, self.vehicle_details_templates, {'form': self.vehicle_details_form})
+
+class RegisterPage(View):
+    register_template = "dashboard/register.html"
+
+    # @method_decorator(unauthenticated_user)
+    def get(self, request, *args, **kwargs):
+        if 'register' in kwargs:
+            # form = CreateUserForm()
+            # context = {'form': form}
+            return render(request, self.register_template)
+
+    def post(self, request, *args, **kwargs):
+        if request.POST['password1'] == request.POST['password2']:
+            username = request.POST['username']
+            email = request.POST['email']
+            password1 = request.POST['password1']
+            try:
+                user = User.objects.get(username=username)
+                return render(request, self.register_template, {'error': 'Username has already existed'})
+            except User.DoesNotExist:
+                user = User.objects.create_user(username=username, password=password1,email=email)
+                login(request, user)
+                messages.success(request, 'Account was created for ' + username)
+                return redirect(to='login')
+        else:
+            return render(request, self.register_template, {'error': 'Password does not match'})
 
 
-    # def get(self, request, *args, **kwargs):
-    #     if 'vehicle_excel' in kwargs:
-    #         return render(request, self.vehicle_details_templates, {'form': self.vehicle_details_form()})
+
+
+        # form = CreateUserForm(request.POST)
+        # if form.is_valid():
+        #     user = form.save()
+        #     username = form.cleaned_data.get('username')
+
+            # group = Group.objects.get(name='customer')
+            # user.groups.add(group)
+            # emp = employee.Employee.objects.create(
+            #     user=user
+            # )
+
+
+
+
+
+class LoginPage(View):
+    login_template = "dashboard/login.html"
+
+    def get(self, request, *args, **kwargs):
+
+        if 'login' in kwargs:
+            context = {}
+            return render(request, self.login_template, context)
+
+    def post(self, request, *args, **kwargs):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+
+            return redirect(to='dashboard')
+        else:
+            messages.info(request, 'Username or Password is incorrect')
+            return render(request, self.login_template)
+
+
+
+
+
+class Dashboard(View):
+    def get(self,request,*args,**kwargs):
+        if 'dashboard' in kwargs:
+            slot = parking_slot.Parking_slot.objects.all()
+            totalslots = slot.count()
+
+            avaiableslots = parking_slot.Parking_slot.objects.filter(slot_status=True)
+            avaiable = avaiableslots.count()
+
+            totalvehicle = vehicle_details.VehicleDetail.objects.all()
+            countVehicle = totalvehicle.count()
+            context = {
+                'totalslot': totalslots, 'avaiable': avaiable, 'user': countVehicle
+            }
+            return render(request, 'dashboard/Dashboard.html', context)
+
 
 class Vehicle(View):
     vehicle_details_form = VehicleDetailsForm
@@ -85,86 +162,239 @@ class Vehicle(View):
             return redirect(to='vehicle')
 
 
-#     else:
-#         excel_file = request.FILES["excel_file"]
-#
-#         # you may put validations here to check extension or file size
-#
-#         wb = openpyxl.load_workbook(excel_file)
-#
-#         # getting all sheets
-#         sheets = wb.sheetnames
-#         print(sheets)
-#
-#         # getting a particular sheet
-#         worksheet = wb["Sheet1"]
-#         print(worksheet)
-#
-#         # getting active sheet
-#         active_sheet = wb.active
-#         print(active_sheet)
-#
-#         # reading a cell
-#         print(worksheet["A1"].value)
-#
-#         excel_data = list()
-#         # iterating over the rows and
-#         # getting value from each cell in row
-#         for row in worksheet.iter_rows():
-#             row_data = list()
-#             for cell in row:
-#                 row_data.append(str(cell.value))
-#                 print(cell.value)
-#             excel_data.append(row_data)
-#
-#         return render(request, 'dashboard/vehicleDetails.html', {"excel_data": excel_data})
-
-
-def index(request):
-    return render(request, 'dashboard/base.html')
-
-class LoginPage(View):
-    login_template = "dashboard/login.html"
+class ParkingSlot(View):
+    parking_forms = ParkingSlotForm
+    parking_model = parking_slot.Parking_slot
+    parking_add_templates = 'dashboard/parking_slot_add.html'
+    parking_view_templates = 'dashboard/parking_slot_view.html'
 
     def get(self, request, *args, **kwargs):
-
-        if 'login' in kwargs:
-            context = {}
-            return render(request, self.login_template, context)
+        if 'parkingSlot' in kwargs:
+            return render(request, self.parking_add_templates, {'form': self.parking_forms()})
+        elif 'parkingSlotView' in kwargs:
+            model=self.parking_model.objects.all()
+            return render(request,self.parking_view_templates,{'parking':model})
 
     def post(self, request, *args, **kwargs):
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        forms = self.parking_forms(request.POST)
+        if forms.is_valid():
+            slot_name = forms.cleaned_data.get('slot_name')
+            # slot_status = forms.cleaned_data.get('slot_status')
+            self.parking_model.objects.create(slot_name=slot_name, slot_status=True)
+            # messages.success(request, 'successfully add to database ')
+            return redirect(to='parkingSlot')
 
-        user = authenticate(request, username=username, password=password)
+class ParkingSlotEdit(View):
+    parking_forms = ParkingSlotForm
+    parking_model = parking_slot.Parking_slot
+    parking_edit_templates = 'dashboard/parking_slot_edit.html'
 
-        if user is not None:
-            login(request, user)
+    def get(self, request, *args, **kwargs):
+        if 'parkingSlotEdit' in kwargs:
+            editmodel=self.parking_model.objects.get(id=kwargs.get('object_id'))
+            editForm=self.parking_forms(instance=editmodel)
+            return render(request,self.parking_edit_templates,{'Updateparking':editForm})
 
-            return redirect(to='dashboard')
-        else:
-            messages.info(request, 'Username or Password is incorrect')
-            return render(request, self.login_template)
+    def post(self, request, *args, **kwargs):
+        forms = self.parking_forms(request.POST)
+        if forms.is_valid():
+            slot_name = forms.cleaned_data.get('slot_name')
+            # slot_status = forms.cleaned_data.get('slot_status')
+            self.parking_model.objects.filter(id=kwargs.get('object_id')).update(slot_name=slot_name)
+            # messages.success(request, 'successfully add to database ')
+            return redirect(to='parkingSlotView')
+
+
+class Booking(View):
+    booking_forms = BookVehicleForm
+    booking_model = booking.BookVehicle
+    parking_model = parking_slot.Parking_slot
+    booking_add_templates = 'dashboard/bookingAdd.html'
+    booking_view_templates = 'dashboard/bookingView.html'
+
+    def get_data(self, request, *args, **kwargs):
+        # print("coll")
+        if 'barcode_details' in kwargs:
+            print(request.POST.get('barcode_details'))
+            # data = booking.BookVehicle.objects.filter(barcode_id=request.POST.get('barcode_details'))
+            data = vehicle_details.VehicleDetail.objects.filter(pk=request.POST.get('barcode_details')).values(
+                'barcode_number', 'vehicle_number', 'chessis_number', 'vehicle_model', 'variants', 'color',
+                'status'
+            )
+            #     .annotate(
+            #     client_booking_date=ExpressionWrapper(Func(F('date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
+            #                                     output_field=CharField()),
+            # )
+
+            return list(data)
+
+    def get(self, request, *args, **kwargs):
+        if 'booking' in kwargs:
+            available_slot = parking_slot.Parking_slot.objects.filter(slot_status=True)
+            return render(request, self.booking_add_templates,
+                          {'form': self.booking_forms(), 'available_slot': available_slot})
+
+
+
+        elif 'bookingView' in kwargs:
+            model = self.booking_model.objects.all()
+            return render(request, self.booking_view_templates, {'form': model})
+
+    def post(self, request, *args, **kwargs):
+
+       if 'barcode_details' in kwargs:
+            data = self.get_data(request, barcode_details='')
+            # print(data)
+            return JsonResponse(data, safe=False)
+
+       forms = self.booking_forms(request.POST or None)
+       parkingID = request.POST['slot']
+       selected_slot = self.parking_model.objects.get(pk=parkingID)
+       if forms.is_valid():
+            barcode = forms.cleaned_data.get('barcode')
+            vehicle_no = forms.cleaned_data.get('vehicle_no')
+            chessis_no = forms.cleaned_data.get('chessis_no')
+            vehicle_model = forms.cleaned_data.get('vehicle_model')
+            variants = forms.cleaned_data.get('variants')
+            color = forms.cleaned_data.get('color')
+            # booking_date = forms.cleaned_data.get('booking_date')
+            # parking_slot = forms.cleaned_data.get('parking_slot')
+            data=self.booking_model.objects.create(barcode=barcode, vehicle_no=vehicle_no,chessis_no=chessis_no,
+                                              vehicle_model=vehicle_model,variants=variants,color=color,
+                                              parking_slot=selected_slot)
+
+            self.parking_model.objects.filter(pk=parkingID).update(
+                slot_status=False
+            )
+
+            return redirect(to='booking')
+
+
+class BookingEdit(View):
+    booking_forms = BookVehicleForm
+    booking_model = booking.BookVehicle
+    parking_model = parking_slot.Parking_slot
+    # booking_add_templates = 'dashboard/bookingAdd.html'
+    booking_edit_templates = 'dashboard/bookingEdit.html'
+
+    def get_data(self, request, *args, **kwargs):
+        # print("coll")
+        if 'barcode_details' in kwargs:
+            print(request.POST.get('barcode_details'))
+            # data = booking.BookVehicle.objects.filter(barcode_id=request.POST.get('barcode_details'))
+            data = vehicle_details.VehicleDetail.objects.filter(pk=request.POST.get('barcode_details')).values(
+                'barcode_number', 'vehicle_number', 'chessis_number', 'vehicle_model', 'variants', 'color',
+                'status'
+            )
+            #     .annotate(
+            #     client_booking_date=ExpressionWrapper(Func(F('date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
+            #                                     output_field=CharField()),
+            # )
+
+            return list(data)
+
+    def get(self, request, *args, **kwargs):
+        if 'BookingEdit' in kwargs:
+            model = self.booking_model.objects.get(id=kwargs.get('object_id'))
+            editform=self.booking_forms(instance=model)
+            return render(request, self.booking_edit_templates, {'form': editform})
+            # available_slot = parking_slot.Parking_slot.objects.filter(slot_status=True)
+            # return render(request, self.booking_add_templates,
+            #               {'form': self.booking_forms(), 'available_slot': available_slot})
 
 
 
 
 
-class Dashboard(View):
-    def get(self,request,*args,**kwargs):
-        if 'dashboard' in kwargs:
-            slot = parking_slot.Parking_slot.objects.all()
-            totalslots = slot.count()
+    def post(self, request, *args, **kwargs):
 
-            avaiableslots = parking_slot.Parking_slot.objects.filter(slot_status=True)
-            avaiable = avaiableslots.count()
+        if 'barcode_details' in kwargs:
+            data = self.get_data(request, barcode_details='')
+            # print(data)
+            return JsonResponse(data, safe=False)
 
-            bookings = add_vehicle.UserVehicle.objects.all()
-            booking = bookings.count()
-            context = {
-                'totalslot': totalslots, 'avaiable': avaiable, 'user': booking
-            }
-            return render(request, 'dashboard/Dashboard.html', context)
+        forms = self.booking_forms(request.POST or None)
+        # parkingID = request.POST['slot']
+        # selected_slot = self.parking_model.objects.get(pk=parkingID)
+        if forms.is_valid():
+            barcode = forms.cleaned_data.get('barcode')
+            vehicle_no = forms.cleaned_data.get('vehicle_no')
+            chessis_no = forms.cleaned_data.get('chessis_no')
+            vehicle_model = forms.cleaned_data.get('vehicle_model')
+            variants = forms.cleaned_data.get('variants')
+            color = forms.cleaned_data.get('color')
+            # booking_date = forms.cleaned_data.get('booking_date')
+            # parking_slot = forms.cleaned_data.get('parking_slot')
+            data = self.booking_model.objects.filter(id=kwargs.get('object_id')).update(barcode=barcode, vehicle_no=vehicle_no, chessis_no=chessis_no,
+                                                     vehicle_model=vehicle_model, variants=variants, color=color)
+
+            # self.parking_model.objects.filter(pk=parkingID).update(
+            #     slot_status=False
+            # )
+
+            return redirect(to='bookingView')
+
+class Exit(View):
+    booking_model = booking.BookVehicle
+    exit_forms = ExitVehicleForm
+    exit_model = booking.ParkingExit
+    exit_add_templates = 'dashboard/ExitAdd.html'
+    exit_view_templates = 'dashboard/bookingView.html'
+
+    def get(self, request, *args, **kwargs):
+            if 'exit' in kwargs:
+                return render(request, self.exit_add_templates,{'form': self.exit_forms()})
+
+
+
+            # elif 'bookingView' in kwargs:
+            #     model = self.booking_model.objects.all()
+            #     return render(request, self.exit_view_templates, {'form': model})
+
+    def get_data(self, request, *args, **kwargs):
+        print("coll")
+        if 'barcode_no' in kwargs:
+            print(request.POST.get('barcode_no'))
+            # data = booking.BookVehicle.objects.filter(barcode_id=request.POST.get('barcode_details'))
+            data = self.booking_model.objects.filter(pk=request.POST.get('barcode_no')).values(
+                'barcode', 'vehicle_no', 'chessis_no', 'vehicle_model', 'variants', 'color',
+                'parking_slot'
+            ).annotate(
+                booking_slot=ExpressionWrapper(Func(F('date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
+                                                output_field=CharField()),
+            )
+
+            return list(data)
+
+
+
+    def post(self, request, *args, **kwargs):
+
+       if 'barcode_no' in kwargs:
+            data = self.get_data(request, barcode_no='')
+            print(data)
+            return JsonResponse(data, safe=False)
+
+    #    forms = self.exit_forms(request.POST or None)
+    #    if forms.is_valid():
+    #         barcode = forms.cleaned_data.get('barcode')
+    #         vehicle_no = forms.cleaned_data.get('vehicle_no')
+    #         chessis_no = forms.cleaned_data.get('chessis_no')
+    #         vehicle_model = forms.cleaned_data.get('vehicle_model')
+    #         variants = forms.cleaned_data.get('variants')
+    #         color = forms.cleaned_data.get('color')
+    #         # booking_date = forms.cleaned_data.get('booking_date')
+    #         parking_slot = forms.cleaned_data.get('parking_slot')
+    #         data=self.booking_model.objects.create(barcode=barcode, vehicle_no=vehicle_no,chessis_no=chessis_no,
+    #                                           vehicle_model=vehicle_model,variants=variants,color=color,
+    #                                           parking_slot=parking_slot)
+    #
+    #         # self.parking_model.objects.filter(pk=parkingID).update(
+    #         #     slot_status=False
+    #         # )
+    #
+    #         return redirect(to='booking')
+
 
 
 class CategoryAdd(View):
@@ -223,120 +453,12 @@ class CategoryEdit(View):
             return redirect(to='categoryView')
 
 
-class ParkingSlot(View):
-    parking_forms = ParkingSlotForm
-    parking_model = parking_slot.Parking_slot
-    parking_add_templates = 'dashboard/parking_slot_add.html'
-    parking_view_templates = 'dashboard/parking_slot_view.html'
 
-    def get(self, request, *args, **kwargs):
-        if 'parkingSlot' in kwargs:
-            return render(request, self.parking_add_templates, {'form': self.parking_forms()})
-        elif 'parkingSlotView' in kwargs:
-            model=self.parking_model.objects.all()
-            return render(request,self.parking_view_templates,{'parking':model})
-
-    def post(self, request, *args, **kwargs):
-        forms = self.parking_forms(request.POST)
-        if forms.is_valid():
-            slot_name = forms.cleaned_data.get('slot_name')
-            # slot_status = forms.cleaned_data.get('slot_status')
-            self.parking_model.objects.create(slot_name=slot_name, slot_status=True)
-            # messages.success(request, 'successfully add to database ')
-            return redirect(to='parkingSlot')
-
-class ParkingSlotEdit(View):
-    parking_forms = ParkingSlotForm
-    parking_model = parking_slot.Parking_slot
-    parking_edit_templates = 'dashboard/parking_slot_edit.html'
-
-    def get(self, request, *args, **kwargs):
-        if 'parkingSlotEdit' in kwargs:
-            editmodel=self.parking_model.objects.get(id=kwargs.get('object_id'))
-            editForm=self.parking_forms(instance=editmodel)
-            return render(request,self.parking_edit_templates,{'Updateparking':editForm})
-
-    def post(self, request, *args, **kwargs):
-        forms = self.parking_forms(request.POST)
-        if forms.is_valid():
-            slot_name = forms.cleaned_data.get('slot_name')
-            # slot_status = forms.cleaned_data.get('slot_status')
-            self.parking_model.objects.filter(id=kwargs.get('object_id')).update(slot_name=slot_name)
-            # messages.success(request, 'successfully add to database ')
-            return redirect(to='parkingSlotView')
 
 #------------------new
 
 
 
-class Booking(View):
-    booking_forms = BookVehicleForm
-    booking_model = booking.BookVehicle
-    parking_model = parking_slot.Parking_slot
-    booking_add_templates = 'dashboard/bookingAdd.html'
-    booking_view_mplates = 'dashboard/bookingView.html'
-
-    def get_data(self, request, *args, **kwargs):
-        print("coll")
-        if 'barcode_details' in kwargs:
-            print(request.POST.get('barcode_details'))
-            # data = booking.BookVehicle.objects.filter(barcode_id=request.POST.get('barcode_details'))
-            data = vehicle_details.VehicleDetail.objects.filter(pk=request.POST.get('barcode_details')).values(
-                'barcode_number', 'vehicle_number', 'chessis_number', 'vehicle_model', 'variants', 'color',
-                'status'
-            )
-            #     .annotate(
-            #     client_booking_date=ExpressionWrapper(Func(F('date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
-            #                                     output_field=CharField()),
-            # )
-
-            return list(data)
-
-    def get(self, request, *args, **kwargs):
-        if 'booking' in kwargs:
-            available_slot = parking_slot.Parking_slot.objects.filter(slot_status=True)
-            barcode_slot = vehicle_details.VehicleDetail.objects.all()
-            # barcode=
-            return render(request, self.booking_add_templates, {'form': self.booking_forms(), 'available_slot':available_slot,'barcode_slots':barcode_slot})
-
-
-        elif 'bookingView' in kwargs:
-            model = self.booking_model.objects.all()
-            return render(request, self.booking_view_mplates, {'form': model})
-
-    def post(self, request, *args, **kwargs):
-        print("okk")
-
-        if 'barcode_details' in kwargs:
-            data = self.get_data(request, barcode_details='')
-            print(data)
-            return JsonResponse(data, safe=False)
-
-        forms = self.booking_forms(request.POST)
-
-
-
-        parkingID = request.POST['slot']
-        selected_slot = self.parking_model.objects.get(pk=parkingID)
-        if forms.is_valid():
-            categoty_name = forms.cleaned_data.get('categoty_name')
-            Barcode_no = forms.cleaned_data.get('Barcode_no')
-            owner_name = forms.cleaned_data.get('owner_name')
-            owner_contact = forms.cleaned_data.get('owner_contact')
-            vehicle_model = forms.cleaned_data.get('vehicle_model')
-            vehicle_no = forms.cleaned_data.get('vehicle_no')
-            chessis_no = forms.cleaned_data.get('chessis_no')
-            # parking_slot = forms.cleaned_data.get('parking_slot')
-            self.booking_model.objects.create(categoty_name=categoty_name, Barcode_no=Barcode_no,owner_name=owner_name,
-                                              owner_contact=owner_contact,
-                                              vehicle_model=vehicle_model, vehicle_no=vehicle_no, chessis_no=chessis_no,
-                                              parking_slot=selected_slot)
-            # messages.success(request, 'successfully add to database ')
-            self.parking_model.objects.filter(pk=parkingID).update(
-                slot_status=False
-            )
-
-            return redirect(to='bookVehicle')
 
 
 
@@ -443,7 +565,7 @@ class ParkingEntry(View):
 
     def post(self,request,*args,**kwargs):
         barcode=request.POST['barcode']
-        print(barcode)
+        # print(barcode)
         entrydate=request.POST['entrydate']
         entrytime=request.POST['entrytime']
         barcode_no = add_vehicle.UserVehicle.objects.get(pk=barcode)

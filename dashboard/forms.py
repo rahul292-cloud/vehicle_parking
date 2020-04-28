@@ -1,6 +1,6 @@
 import os
-# from django.contrib.auth.forms import UserCreationForm
-# from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django import forms
 from allModels import category,add_vehicle,parking_slot,parking_in,parkingOut,vehicle_details,booking
     # ,,parking_out,
@@ -9,6 +9,16 @@ from allModels import category,add_vehicle,parking_slot,parking_in,parkingOut,ve
 class DateInput(forms.DateInput):
     input_type='date'
 
+class CreateUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'email': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'password1': forms.PasswordInput(attrs={'class': 'form-control form-control-sm'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form-control form-control-sm'}),
+        }
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -70,12 +80,20 @@ class ParkingOutForm(forms.ModelForm):
 
         }
 #
+
 #
+class DateTimeInput(forms.DateTimeInput):
+    input_type = "datetime-local"
+
+    def __init__(self, **kwargs):
+        kwargs["format"] = "'%Y-%m-%d %H:%M:%S'"
+        super().__init__(**kwargs)
+
 class BookVehicleForm(forms.ModelForm):
     class Meta:
         model=booking.BookVehicle
         fields=[
-            'barcode','vehicle_no','chessis_no','vehicle_model','variants','color','parking_slot','status'
+            'barcode','vehicle_no','chessis_no','vehicle_model','variants','color','parking_slot','status','booking_date','booking_exit_date'
             ]
         widgets={
             'barcode': forms.Select(attrs={'class': 'form-control form-control-sm'}),
@@ -84,11 +102,28 @@ class BookVehicleForm(forms.ModelForm):
             'vehicle_model': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
             'variants': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
             'color': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'booking_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control form-control-sm'}),
+            'booking_exit_date': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
             'parking_slot': forms.Select(attrs={'class': 'form-control form-control-sm'}),
 
         }
 
+class ExitVehicleForm(forms.ModelForm):
+    class Meta:
+        model=booking.ParkingExit
+        fields=[
+            'barcode','vehicle_no','chessis_no','vehicle_model','variants','color','slot','exit_date','status',
+            ]
+        widgets={
+            'barcode': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'vehicle_no': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'chessis_no': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'vehicle_model': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'variants': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'color': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'slot': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
 
+        }
 
 class UserVehicleForm(forms.ModelForm):
     class Meta:

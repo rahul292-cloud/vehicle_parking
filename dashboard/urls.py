@@ -7,9 +7,9 @@ urlpatterns = [
     path('vehicleView', views.Vehicle.as_view(),{'vehicleView':''}, name='vehicleView'),
 
     # path('vehicle_excel',views.VehicleExcel.as_view(),{'vehicle_excel':''},name='vehicle_excel'),
-    # path('vehicle_excel', views.Vehicle_Excel.as_view(), {'vehicle_excel': ''}, name='vehicle_excel'),
+    path('register', views.RegisterPage.as_view(), {'register': ''}, name='register'),
 
-    path('register', views.register, name='register'),
+    # path('register', views.register, name='register'),
     path('dashboard', views.Dashboard.as_view(), {'dashboard': ''}, name='dashboard'),
 
     path('', views.LoginPage.as_view(), {'login': ''}, name='login'),
@@ -19,9 +19,13 @@ urlpatterns = [
     path('category', views.CategoryAdd.as_view(), {'category': ''}, name='category'),
     path('categoryEdit/<int:object_id>', views.CategoryEdit.as_view(), {'categoryEdit': ''}, name="categoryEdit"),
 
+    path('exit', views.Exit.as_view(), {'exit': ''}, name='exit'),
+    path('barcode_no', views.Exit.as_view(), {'barcode_no': ''}, name='barcode_no'),
+
     path('booking', views.Booking.as_view(), {'booking': ''}, name='booking'),
     path('bookingView', views.Booking.as_view(), {'bookingView': ''}, name='bookingView'),
     path('barcode_details', views.Booking.as_view(), {'barcode_details': ''}, name='barcode_details'),
+    path('BookingEdit/<int:object_id>', views.BookingEdit.as_view(), {'BookingEdit': ''}, name='BookingEdit'),
 
     path('bookVehicle', views.BookVehicle.as_view(), {'bookVehicle': ''}, name='bookVehicle'),
     path('viewVehicle', views.BookVehicle.as_view(), {'viewVehicle': ''}, name='viewVehicle'),
