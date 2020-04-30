@@ -255,12 +255,13 @@ class Booking(View):
     parking_model = parking_slot.Parking_slot
     booking_add_templates = 'dashboard/bookingAdd.html'
     booking_view_templates = 'dashboard/bookingView.html'
+    booking_print_templates = 'dashboard/bookingPrint.html'
 
-    def get_data(self, request, *args, **kwargs):
-        # print("coll")
+    def get_data(self, request, id=None, *args, **kwargs):
+        print(id)
         if 'barcode_details' in kwargs:
             print(request.POST.get('barcode_details'))
-            # data = booking.BookVehicle.objects.filter(barcode_id=request.POST.get('barcode_details'))
+
             data = vehicle_details.VehicleDetail.objects.filter(pk=request.POST.get('barcode_details')).values(
                 'barcode_number', 'vehicle_number', 'chessis_number', 'vehicle_model', 'variants', 'color',
                 'status'
@@ -271,7 +272,16 @@ class Booking(View):
             # )
 
             return list(data)
-
+        data = self.booking_model.objects.filter(id=id).values('vehicle_no','chessis_no',
+                                                                                          'vehicle_model',
+                                                                                          'variants',
+                                                                                          'color',
+                                                                                          'status').annotate(
+            print_barcode_details = F('barcode_details__barcode_number'),
+            print_booking_date=ExpressionWrapper(Func(F('booking_date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
+                                                                                 output_field=CharField()),
+        )
+        return list(data)
     def get(self, request, *args, **kwargs):
         if 'booking' in kwargs:
             available_slot = parking_slot.Parking_slot.objects.filter(slot_status=True)
@@ -280,7 +290,21 @@ class Booking(View):
                           {'form': self.booking_forms(), 'available_slot': available_slot,
                            'available_barcode': available_barcode})
 
-
+        if 'printDetails' in kwargs:
+            # print_data = self.booking_model.objects.filter(id=kwargs.get('object_id')).values('vehicle_no',
+            #                                                                                   'chessis_no',
+            #                                                                                   'vehicle_model',
+            #                                                                                   'variants',
+            #                                                                                   'color',
+            #                                                                                   'status').annotate(
+            #     print_barcode_details = F('barcode_details__barcode_number'),
+            #     print_booking_date=ExpressionWrapper(Func(F('booking_date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
+            #                                                                          output_field=CharField()),
+            # )
+            # print(print_data[0]['print_booking_date'])
+            data = self.get_data(request, id=kwargs.get('object_id'))
+            print(data)
+            return render(request, self.booking_print_templates, {'print_data': data})
 
         elif 'bookingView' in kwargs:
             model = self.booking_model.objects.all().order_by('-id')
