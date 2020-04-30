@@ -1,13 +1,13 @@
 {% extends 'dashboard/base.html' %}
 {% block title %}
-Book vehicle
+Exit vehicle
 {% endblock %}
 
 {% block content %}
 
       <div class="app-title">
         <div>
-          <h1><i class="fa fa-th-list"></i> Book Vehicle</h1>
+          <h1><i class="fa fa-th-list"></i> Exit Vehicle</h1>
           <p>Book vehicle to display analytical data effectively</p>
         </div>
         <ul class="app-breadcrumb breadcrumb side">
@@ -30,26 +30,26 @@ Book vehicle
                       <th>Vehicle Model</th>
                       <th>Variants</th>
                       <th>Color</th>
-                      <th>Entry Date</th>
+                      <th>Exit Date</th>
                       <th>Parking Slot</th>
                       <th>Action</th>
                     </tr>
                   </thead>
-                  {% for vehicle in form %}
+                  {% for exit in form %}
 
                   <tbody>
                     <tr>
-                      <td>{{vehicle.barcode_details}}</td>
-                      <td>{{vehicle.vehicle_no}}</td>
-                      <td>{{vehicle.chessis_no}}</td>
-                      <td>{{vehicle.vehicle_model}}</td>
-                      <td>{{vehicle.variants}}</td>
-                      <td>{{vehicle.color}}</td>
-                      <td>{{vehicle.booking_date}}</td>
-                      <td>{{vehicle.parking_slot}}</td>
+                      <td>{{exit.barcode}}</td>
+                      <td>{{exit.vehicle_no}}</td>
+                      <td>{{exit.chessis_no}}</td>
+                      <td>{{exit.vehicle_model}}</td>
+                      <td>{{exit.variants}}</td>
+                      <td>{{exit.color}}</td>
+                      <td>{{exit.exit_date}}</td>
+                      <td>{{exit.slot}}</td>
 
                       <td>
-                        <a class="btn btn-primary" href="{% url 'BookingEdit' vehicle.pk %}"><i class="fa fa-pencil-square-o"></i></a>
+                        <a class="btn btn-primary" href=""><i class="fa fa-pencil-square-o"></i></a>
 
                         <a class="btn btn-primary" href=""><i class="fa fa-trash-o"></i></a>
                       </td>

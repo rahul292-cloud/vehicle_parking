@@ -157,11 +157,16 @@
             <ul class="treeview-menu">
                 <li><a class="treeview-item" href="{% url 'exit' %}"><i class="icon fa fa-circle-o"></i>
                     Add</a></li>
-                <li><a class="treeview-item" href="{% url 'parkingExitView'%}"><i class="icon fa fa-circle-o"></i>Manage</a>
+                <li><a class="treeview-item" href="{% url 'exitView'%}"><i class="icon fa fa-circle-o"></i>Manage</a>
                 </li>
 
             </ul>
         </li>
+
+         <li><a class="app-menu__item" href="{% url 'liveTracking' %}"><i class="app-menu__icon fa fa-file-code-o"></i><span
+                class="app-menu__label">Live Vehicle</span></a></li>
+
+
         <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
                 class="app-menu__icon fa fa-slideshare"></i><span class="app-menu__label">Category</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
@@ -225,6 +230,11 @@
 
 <!-- The javascript plugin to display page loading on top-->
 
+<script src="{% static 'dashboard/js/plugins/pace.min.js'%}"></script>
+
+    <script  src="{% static 'dashboard/js/plugins/jquery.dataTables.min.js'%}"></script>
+    <script  src="{% static 'dashboard/js/plugins/dataTables.bootstrap.min.js' %}"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
         integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
 
@@ -246,21 +256,6 @@
       	ga('create', 'UA-72504830-1', 'auto');
       	ga('send', 'pageview');
       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

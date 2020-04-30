@@ -7,7 +7,7 @@ Exit Add
 {% block content %}
 <div class="app-title">
     <div>
-        <h1><i class="fa fa-plus"></i> Exit</h1>
+        <h1><i class="fa fa-times-circle"></i> Exit</h1>
 
     </div>
 </div>
@@ -23,7 +23,14 @@ Exit Add
                         <div class="form-group col-lg-5">
                             <label for="exampleInputName">Barcode Number</label>
                             <div id="exampleInputName" name="barcode" onChange="my_details()">
-                                {{form.barcode}}
+                                <!--                                {{form.barcode}}-->
+                                <select name="barcode" id="barcode" class="form-control form-control-sm">
+                                    <option value="0">Barcode Number</option>
+                                    {% for item in available_barcode %}
+                                    <option value="{{item.id}}">{{item.barcode_details}}</option>
+                                    {% endfor %}
+                                </select>
+
 
                             </div>
                         </div>
@@ -31,7 +38,9 @@ Exit Add
                         <div class="form-group col-lg-5">
                             <label for="exampleInputBarcode">Vehicle Number</label>
                             <div id="exampleInputBarcode" name="vehicle_no">
-                                {{form.vehicle_no}}
+                                <input type='text' class="form-control" name="vehicle_no" id="id_vehicle_no"/>
+
+                                <!--                                {{form.vehicle_no}}-->
                             </div>
                         </div>
 
@@ -39,28 +48,37 @@ Exit Add
                         <div class="form-group col-lg-5">
                             <label for="exampleInputWebsite">Chessis Number</label>
                             <div id="exampleInputWebsite" name="chessis_no">
-                                {{form.chessis_no}}
+                                <input type='text' class="form-control" name="chessis_no" id="id_chessis_no"/>
+
+                                <!--                                {{form.chessis_no}}-->
                             </div>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputEmai">Vehicle Model</label>
                             <div id="exampleInputEmai" name="vehicle_model">
-                                {{form.vehicle_model}}
+                                <input type='text' class="form-control" name="vehicle_model" id="id_vehicle_model"/>
+
+                                <!--                                {{form.vehicle_model}}-->
                             </div>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputMobile">Variant</label>
                             <div id="exampleInputMobile" name="variants">
-                                {{form.variants}}
+                                <input type='text' class="form-control" name="variants" id="id_variants"/>
+
+
+                                <!--                                {{form.variants}}-->
                             </div>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputColor">Color</label>
                             <div id="exampleInputColor" name="color">
-                                {{form.color}}
+                                <input type='text' class="form-control" name="color" id="id_color"/>
+
+                                <!--                                {{form.color}}-->
                             </div>
                         </div>
 
@@ -68,28 +86,22 @@ Exit Add
                         <div class="form-group col-lg-5">
                             <label for="exampleInputAddress">Parking Slot</label>
                             <div id="exampleInputAddress" name="parking_slot">
-                                {{form.slot}}
-<!--                                <select name="slot" id="slot" class="form-control form-control-sm">-->
-<!--                                    <option value="0">Select Slot</option>-->
-<!--                                    {% for item in available_slot %}-->
-<!--                                    <option value="{{item.id}}">{{item.slot_name}}</option>-->
-<!--                                    {% endfor %}-->
-<!--                                </select>-->
+                                <input type='text' class="form-control" name="parking_slot" id="id_slot"/>
+
                             </div>
                         </div>
 
-<!--                        <div class="form-group col-lg-5">-->
-<!--                            <label for="exampleInputAddress">Parking Slot</label>-->
-<!--                            <div id="exampleInputAddress" name="parking_slot">-->
-<!--                                <select name="slot" id="slot" class="form-control form-control-sm">-->
-<!--                                    <option value="0">Select Slot</option>-->
-<!--                                    {% for item in available_slot %}-->
-<!--                                    <option value="{{item.id}}">{{item.slot_name}}</option>-->
-<!--                                    {% endfor %}-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
+                        <!--                        <div class="form-group col-lg-5">-->
+                        <!--                            <label for="exampleInputAddress">Parking Slot</label>-->
+                        <!--                            <div id="exampleInputAddress" name="parking_slot">-->
+                        <!--                                <select name="slot" id="slot" class="form-control form-control-sm">-->
+                        <!--                                    <option value="0">Select Slot</option>-->
+                        <!--                                    {% for item in available_slot %}-->
+                        <!--                                    <option value="{{item.id}}">{{item.slot_name}}</option>-->
+                        <!--                                    {% endfor %}-->
+                        <!--                                </select>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
 
 
                     </div>
@@ -130,7 +142,7 @@ Exit Add
    $(document).ready(function()
     {
 
-        $("#slot").select2(
+        $("#barcode").select2(
         {
 
         }
@@ -144,7 +156,7 @@ Exit Add
 
 function my_details(){
 
-        var barcode_no = $(`#id_barcode`).val()
+        var barcode_no = $(`#barcode`).val()
         console.log(barcode_no)
         if(barcode_no)
         {
@@ -162,8 +174,7 @@ function my_details(){
                     $(`#id_vehicle_no`).val(data[0]['vehicle_no'])
                     $(`#id_vehicle_model`).val(data[0]['vehicle_model'])
                     $(`#id_color`).val(data[0]['color'])
-                    $(`#id_parking_slot`).val(data[0]['parking_slot'])
-                    consolo.log(data[0]['parking_slot'])
+                    $(`#id_slot`).val(data[0]['client_parking_slot'])
 
 
             }
@@ -180,6 +191,7 @@ function my_details(){
 <!--                    $(`#id_color`).val(data[0][''])-->
 <!--           }-->
      }
+
 
 
 

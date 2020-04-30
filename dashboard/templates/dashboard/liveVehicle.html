@@ -1,13 +1,13 @@
 {% extends 'dashboard/base.html' %}
 {% block title %}
-Book vehicle
+Exit vehicle
 {% endblock %}
 
 {% block content %}
 
       <div class="app-title">
         <div>
-          <h1><i class="fa fa-th-list"></i> Book Vehicle</h1>
+          <h1><i class="fa fa-th-list"></i> Live Vehicle</h1>
           <p>Book vehicle to display analytical data effectively</p>
         </div>
         <ul class="app-breadcrumb breadcrumb side">
@@ -31,28 +31,30 @@ Book vehicle
                       <th>Variants</th>
                       <th>Color</th>
                       <th>Entry Date</th>
+                      <th>Exit Date</th>
                       <th>Parking Slot</th>
-                      <th>Action</th>
                     </tr>
                   </thead>
-                  {% for vehicle in form %}
+
+                  {% for exit in form %}
 
                   <tbody>
                     <tr>
-                      <td>{{vehicle.barcode_details}}</td>
-                      <td>{{vehicle.vehicle_no}}</td>
-                      <td>{{vehicle.chessis_no}}</td>
-                      <td>{{vehicle.vehicle_model}}</td>
-                      <td>{{vehicle.variants}}</td>
-                      <td>{{vehicle.color}}</td>
-                      <td>{{vehicle.booking_date}}</td>
-                      <td>{{vehicle.parking_slot}}</td>
+<!--                      <td>{{exit.client_barcode}}</td>-->
+                      <td>{{exit.client_selected_barcode}}</td>
+                      <td>{{exit.vehicle_no}}</td>
+                      <td>{{exit.chessis_no}}</td>
+                      <td>{{exit.vehicle_model}}</td>
+                      <td>{{exit.variants}}</td>
+                      <td>{{exit.color}}</td>
+<!--                      <td>{{exit.client_date}}</td>-->
+                      <td>{{exit.booking_date}}</td>
+                      <td>{{exit.bn}}</td>
+<!--                      <td>{{exit.slot}}</td>-->
+                      <td>{{exit.client_parking_slot}}</td>
 
-                      <td>
-                        <a class="btn btn-primary" href="{% url 'BookingEdit' vehicle.pk %}"><i class="fa fa-pencil-square-o"></i></a>
 
-                        <a class="btn btn-primary" href=""><i class="fa fa-trash-o"></i></a>
-                      </td>
+
                     </tr>
                   </tbody>
 
@@ -63,4 +65,32 @@ Book vehicle
           </div>
         </div>
       </div>
+{% endblock %}
+{% block script %}
+{{ block.super }}
+
+<script>
+  $('#sampleTable').DataTable();
+
+
+</script>
+
+
+<script>
+
+
+if(document.location.hostname == 'pratikborsadiya.in') {
+      	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      	ga('create', 'UA-72504830-1', 'auto');
+      	ga('send', 'pageview');
+      }
+
+
+</script>
+
+
+
 {% endblock %}

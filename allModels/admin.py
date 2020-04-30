@@ -5,7 +5,7 @@ from .parking_slot import Parking_slot
 from .parking_in import ParkingIn
 from .parkingOut import ParkingOut
 from .vehicle_details import VehicleDetail
-from .booking import BookVehicle
+from .booking import BookVehicle,ParkingExit
 # Register your models here.
 
 admin.site.register(Category)
@@ -15,3 +15,4 @@ admin.site.register(ParkingIn)
 admin.site.register(ParkingOut)
 admin.site.register(VehicleDetail)
 admin.site.register(BookVehicle)
+admin.site.register(ParkingExit)

@@ -23,7 +23,14 @@ Booking Add
                         <div class="form-group col-lg-5">
                             <label for="exampleInputName">Barcode Number</label>
                             <div id="exampleInputName" name="barcode" onChange="my_details()">
-                                {{form.barcode}}
+                                <!--           available_barcode                     {{form.barcode}}-->
+                                <select name="barcode" id="id_barcode" class="form-control form-control-sm">
+                                    <option value="0">Select Barcode</option>
+                                    {% for item in available_barcode %}
+                                    <option value="{{item.id}}">{{item.barcode_number}}</option>
+                                    {% endfor %}
+                                </select>
+
 
                             </div>
                         </div>
@@ -31,7 +38,9 @@ Booking Add
                         <div class="form-group col-lg-5">
                             <label for="exampleInputBarcode">Vehicle Number</label>
                             <div id="exampleInputBarcode" name="vehicle_no">
-                                {{form.vehicle_no}}
+                                <input type='text' class="form-control" name="vehicle_no" id="id_vehicle_no"/>
+
+                                <!--                                {{form.vehicle_no}}-->
                             </div>
                         </div>
 
@@ -39,37 +48,45 @@ Booking Add
                         <div class="form-group col-lg-5">
                             <label for="exampleInputWebsite">Chessis Number</label>
                             <div id="exampleInputWebsite" name="chessis_no">
-                                {{form.chessis_no}}
+                                <input type='text' class="form-control" name="chessis_no" id="id_chessis_no"/>
+
+                                <!--                                {{form.chessis_no}}-->
                             </div>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputEmai">Vehicle Model</label>
                             <div id="exampleInputEmai" name="vehicle_model">
-                                {{form.vehicle_model}}
+                                <input type='text' class="form-control" name="vehicle_model" id="id_vehicle_model"/>
+
+                                <!--                                {{form.vehicle_model}}-->
                             </div>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputMobile">Variant</label>
                             <div id="exampleInputMobile" name="variants">
-                                {{form.variants}}
+                                <input type='text' class="form-control" name="variants" id="id_variants"/>
+
+                                <!--                                {{form.variants}}-->
                             </div>
                         </div>
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputColor">Color</label>
                             <div id="exampleInputColor" name="color">
-                                {{form.color}}
+                                <input type='text' class="form-control" name="color" id="id_color"/>
+
+                                <!--                                {{form.color}}-->
                             </div>
                         </div>
 
-<!--                        <div class="form-group col-lg-5">-->
-<!--                            <label for="datetimepicker">Entry Date</label>-->
-<!--                            <div id="datetimepicker" name="booking_date">-->
-<!--                                {{form.booking_date}}-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <!--                        <div class="form-group col-lg-5">-->
+                        <!--                            <label for="datetimepicker">Entry Date</label>-->
+                        <!--                            <div id="datetimepicker" name="booking_date">-->
+                        <!--                                {{form.booking_date}}-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
 
                         <div class="form-group col-lg-5">
                             <label for="exampleInputAddress">Parking Slot</label>
@@ -83,18 +100,17 @@ Booking Add
                             </div>
                         </div>
 
-<!--                        <div class="form-group col-lg-5">-->
-<!--                            <label for="exampleInputAddress">Parking Slot</label>-->
-<!--                            <div id="exampleInputAddress" name="parking_slot">-->
-<!--                                <select name="slot" id="slot" class="form-control form-control-sm">-->
-<!--                                    <option value="0">Select Slot</option>-->
-<!--                                    {% for item in available_slot %}-->
-<!--                                    <option value="{{item.id}}">{{item.slot_name}}</option>-->
-<!--                                    {% endfor %}-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
+                        <!--                        <div class="form-group col-lg-5">-->
+                        <!--                            <label for="exampleInputAddress">Parking Slot</label>-->
+                        <!--                            <div id="exampleInputAddress" name="parking_slot">-->
+                        <!--                                <select name="slot" id="slot" class="form-control form-control-sm">-->
+                        <!--                                    <option value="0">Select Slot</option>-->
+                        <!--                                    {% for item in available_slot %}-->
+                        <!--                                    <option value="{{item.id}}">{{item.slot_name}}</option>-->
+                        <!--                                    {% endfor %}-->
+                        <!--                                </select>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
 
 
                     </div>
@@ -136,6 +152,12 @@ Booking Add
     {
 
         $("#slot").select2(
+        {
+
+        }
+        );
+
+ $("#id_barcode").select2(
         {
 
         }
@@ -183,6 +205,8 @@ function my_details(){
 <!--                    $(`#id_color`).val(data[0][''])-->
 <!--           }-->
      }
+
+
 
 
 

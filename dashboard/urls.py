@@ -11,6 +11,7 @@ urlpatterns = [
 
     # path('register', views.register, name='register'),
     path('dashboard', views.Dashboard.as_view(), {'dashboard': ''}, name='dashboard'),
+    path('chartView', views.Chart.as_view(), {'chartView': ''}, name='chartView'),
 
     path('', views.LoginPage.as_view(), {'login': ''}, name='login'),
 
@@ -20,6 +21,7 @@ urlpatterns = [
     path('categoryEdit/<int:object_id>', views.CategoryEdit.as_view(), {'categoryEdit': ''}, name="categoryEdit"),
 
     path('exit', views.Exit.as_view(), {'exit': ''}, name='exit'),
+    path('exitView', views.Exit.as_view(), {'exitView': ''}, name='exitView'),
     path('barcode_no', views.Exit.as_view(), {'barcode_no': ''}, name='barcode_no'),
 
     path('booking', views.Booking.as_view(), {'booking': ''}, name='booking'),
@@ -42,5 +44,7 @@ urlpatterns = [
 
     path('parkingExit', views.ParkingExit.as_view(), {'parkingExit': ''}, name='parkingExit'),
     path('parkingExitView', views.ParkingExit.as_view(), {'parkingExitView': ''}, name='parkingExitView'),
+
+    path('liveTracking', views.LiveTracking.as_view(), {'liveTracking': ''}, name='liveTracking'),
 
 ]

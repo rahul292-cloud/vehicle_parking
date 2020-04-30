@@ -17,7 +17,7 @@ Category
 </div>
 <div class="row">
     <div class="col-md-6 col-lg-3">
-        <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+        <div class="widget-small primary coloured-icon"><i class="icon fa fa-bus fa-3x"></i>
             <div class="info">
                 <h4>Total Vehicle</h4>
                 <p><b>{{user}}</b></p>
@@ -25,7 +25,7 @@ Category
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
-        <div class="widget-small info coloured-icon"><i class="icon fa fa-star fa-3x"></i>
+        <div class="widget-small info coloured-icon"><i class="icon fa fa-battery-empty fa-3x"></i>
             <div class="info">
                 <h4>Total Slot</h4>
                 <p><b>{{totalslot}}</b></p>
@@ -41,13 +41,49 @@ Category
         </div>
     </div>
     <div class="col-md-6 col-lg-3">
-        <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>
+        <div class="widget-small primary coloured-icon"><i class="icon fa fa-book fa-3x"></i>
             <div class="info">
-                <h4>Stars</h4>
-                <p><b>500</b></p>
+                <h4>Total Booking</h4>
+                <p><b>{{book}}</b></p>
             </div>
         </div>
     </div>
+<!--    <div class="col-md-6 col-lg-3">-->
+<!--        <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>-->
+<!--            <div class="info">-->
+<!--                <h4>Stars</h4>-->
+<!--                <p><b>500</b></p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+
+<div class="row">
+
+    <div class="col-md-6 col-lg-3">
+        <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>
+            <div class="info">
+                <h4>Total Exit</h4>
+                <p><b>{{exit}}</b></p>
+            </div>
+        </div>
+    </div>
+<!--    <div class="col-md-6 col-lg-3">-->
+<!--        <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>-->
+<!--            <div class="info">-->
+<!--                <h4>Available Slot</h4>-->
+<!--                <p><b>{{avaiable}}</b></p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="col-md-6 col-lg-3">-->
+<!--        <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>-->
+<!--            <div class="info">-->
+<!--                <h4>Stars</h4>-->
+<!--                <p><b>500</b></p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 </div>
 
 <div class="row">
@@ -56,7 +92,8 @@ Category
             <h3 class="tile-title">Monthly Report</h3>
 
             <div class="embed-responsive embed-responsive-16by9">
-                                <div id="container1" style="width: 500px; height: 400px"></div>
+<!--                                <div id="container1" style="width: 500px; height: 400px"></div>-->
+                <canvas id="myChart1" width="400" height="400"></canvas>
 
 <!--                <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>-->
             </div>
@@ -92,7 +129,9 @@ Category
         <div class="tile">
             <h3 class="tile-title">Yearly Report</h3>
             <div class="embed-responsive embed-responsive-16by9">
-                            <div id="container4" style="width: 500px; height: 400px"></div>
+<!--                            <div id="container4" style="width: 500px; height: 400px"></div>-->
+                <canvas id="myChart" width="400" height="400"></canvas>
+
 
 <!--                <canvas class="embed-responsive-item" id="container1"></canvas>-->
             </div>
@@ -108,19 +147,22 @@ Category
 {{ block.super }}
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
 
-<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-base.min.js"></script>
-
-
- <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-core.min.js" type="text/javascript"></script>
-    <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-map.min.js" type="text/javascript"></script>
-    <script src="https://cdn.anychart.com/geodata/2.0.0/countries/australia/australia.js"></script>
+<!--<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-base.min.js"></script>-->
 
 
-<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-core.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-stock.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
-<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-exports.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+
+<!-- <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-core.min.js" type="text/javascript"></script>-->
+<!--    <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-map.min.js" type="text/javascript"></script>-->
+<!--    <script src="https://cdn.anychart.com/geodata/2.0.0/countries/australia/australia.js"></script>-->
+
+
+<!--<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-core.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>-->
+<!--<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-stock.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>-->
+<!--<script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-exports.min.js?hcode=a0c21fc77e1449cc86299c5faa067dc4"></script>-->
 
 
 <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css" rel="stylesheet"/>-->
@@ -129,7 +171,109 @@ Category
 
 <script>
       console.log('hi')
+var get_url="{% url 'chartView' %}"
+var defaultdata=[]
+var labels=[]
 
+$.ajax({
+mathod:'GET',
+url:get_url,
+success: function(data){
+labels=data.labels
+defaultdata=data.totalslot
+defaultdata=data.avaiable
+defaultdata=data.user
+defaultdata=data.book
+defaultdata=data.exit
+defaultdata=data.booking_vehicle
+console.log(data)
+},
+error: function(error_data){
+console.log(error_data)
+
+}
+
+});
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels
+        datasets: [{
+            label: '# of Votes',
+            data: defaultdata,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+var ctx = document.getElementById('myChart1').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+
+
+
+<!--                   dynamic                -->
 
       anychart.onDocumentReady(function() {
 var data = [

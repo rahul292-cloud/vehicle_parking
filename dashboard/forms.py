@@ -93,17 +93,17 @@ class BookVehicleForm(forms.ModelForm):
     class Meta:
         model=booking.BookVehicle
         fields=[
-            'barcode','vehicle_no','chessis_no','vehicle_model','variants','color','parking_slot','status','booking_date','booking_exit_date'
+            'barcode_details','vehicle_no','chessis_no','vehicle_model','variants','color','parking_slot','status','booking_date','booking_exit_date'
             ]
         widgets={
-            'barcode': forms.Select(attrs={'class': 'form-control form-control-sm'}),
+            'barcode_details': forms.Select(attrs={'class': 'form-control form-control-sm'}),
             'vehicle_no': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
             'chessis_no': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
             'vehicle_model': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
             'variants': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
             'color': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
             'booking_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control form-control-sm'}),
-            'booking_exit_date': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            # 'booking_exit_date': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
             'parking_slot': forms.Select(attrs={'class': 'form-control form-control-sm'}),
 
         }
