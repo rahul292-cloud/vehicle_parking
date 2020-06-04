@@ -24,17 +24,18 @@ Location
 
                         </div>
                     </div>
-                    <!--                    <div class="tile-footer">-->
-                    <!--                        <div class="row">-->
-                    <!--                            <div class="col-md-8 col-md-offset-3">-->
-                    <!--                                <button class="btn btn-primary" type="submit"><i-->
-                    <!--                                        class="fa fa-fw fa-lg fa-check-circle"></i>Submit-->
-                    <!--                                </button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="#"-->
-                    <!--                                                              onClick="window.location.reload();">-->
-                    <!--                                <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>-->
-                    <!--                            </div>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
+                                        <div class="tile-footer">
+                                            <div class="row">
+
+                                                <div class="col-md-8 col-md-offset-3">
+                                                    <button class="btn btn-primary" type="submit" onclick="getlocation()"><i
+                                                            class="fa fa-fw fa-lg fa-check-circle"></i>Submit
+<!--                                                    </button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="#"-->
+<!--                                                                                  onClick="window.location.reload();">-->
+<!--                                                    <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>-->
+                                                </div>
+                                            </div>
+                                        </div>
                 </form>
             </div>
 
@@ -49,58 +50,54 @@ Location
 {% block script %}
 {{ block.super }}
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
 <!--  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfScxBlqdk06lSo1Lx8NSgmKCC4SgbqRs&callback=initMap"-->
 <!--  type="text/javascript"></script>-->
 
 <script>
-$(document).ready(function()
-{
-debugger
-
-console.log("Hello location")
-var status=$("#status")
-var infotext=$("#infotext")
-var timer=setTimeout(function(){
-  status.text("Can not the fetch location.Make sure your browser support and allow location tracking.");
-
-},30000)
+var x=document.getElementById('status');
+<!--x.innerHTML="output";-->
 
 function getlocation(){
-if(navigator.geolocation){
-navigator.geolocation.getCurrentPosition(function(position){
-status.html("Latitude :" + position.coords.latitude + " <br/> Longitude : "+ position.coords.longitude);
-infotext.hide();
-$.ajax({
-            method: 'GET',
-            url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + position.coords.latitude + ','+
-             position.coords.longitude +'&sensor=true',
 
-            success: function(data){
-
-                    address = data.results[0].formatted_address;
-                    status.append("<br>Address :" +address);
-                    infotext.hide();
-                    clearTimeout(timer);
-            }
-      })
-
-},function(error){
- status.text("Error while fetch location :"+ error.message);
-
-
-})
-
+if(navigator.geolocation)
+{
+navigator.geolocation.getCurrentPosition(ShowPosition);
 }
 else
 {
- status.text(" Geolocation is not support by this browser.")
+x.innerHTML="not output";
 }
 
 }
-getlocation();
 
+function ShowPosition(position){
+<!--x.innerHTML="Latitude =" + position.coords.latitude;-->
+<!--x.innerHTML +="<br />"-->
+<!--x.innerHTML +="Longitude =" + position.coords.longitude;-->
+
+var locAPI ="http://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude +","+position.coords.longitude +"&sensor=true";
+<!--x.innerHTML =locAPI;-->
+debugger
+$.ajax({
+    type: "GET",
+    url: locAPI,
+    success: function(data, status, jqXHR) {
+    console.log(status, data)
+    x.innerHTML= data.results[0].address_components[4].long_name+", ";
+    x.innerHTML= data.results[0].address_components[5].long_name+", ";
+    x.innerHTML= data.results[0].address_components[6].long_name;
+
+
+
+    }
 });
+
+
+}
+
+
+
 
 
 
