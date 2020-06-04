@@ -37,7 +37,7 @@ Parking Slot View
                       <td>{{parkingSlot.slot_status}}</td>
                       <td>
                         <a class="btn btn-primary" href="{% url 'parkingSlotEdit' parkingSlot.pk %}"><i class="fa fa-pencil-square-o"></i></a>
-                      <a class="btn btn-primary" href="{% url 'parkingSlotEdit' parkingSlot.pk %}"><i class="fa fa-trash-o"></i></a>
+                      <a class="btn btn-primary" href="{% url 'parkingSlotDelete' parkingSlot.pk %}"><i class="fa fa-trash-o"></i></a>
                       </td>
                     </tr>
                   </tbody>

@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('index', views.index, name='index'),
+    path('Location', views.Location, name='Location'),
     path('vehicle', views.Vehicle.as_view(),{'vehicle':''}, name='vehicle'),
     path('vehicleView', views.Vehicle.as_view(),{'vehicleView':''}, name='vehicleView'),
 
@@ -38,6 +39,7 @@ urlpatterns = [
     path('parkingSlot', views.ParkingSlot.as_view(), {'parkingSlot': ''}, name='parkingSlot'),
     path('parkingSlotView', views.ParkingSlot.as_view(), {'parkingSlotView': ''}, name='parkingSlotView'),
     path('parkingSlotEdit/<int:object_id>', views.ParkingSlotEdit.as_view(), {'parkingSlotEdit': ''}, name="parkingSlotEdit"),
+    path('parkingSlotDelete/<int:object_id>', views.ParkingSlotDelete.as_view(), {'parkingSlotDelete': ''}, name="parkingSlotDelete"),
 
     path('parkingEntry',views.ParkingEntry.as_view(),{'parkingEntry':''},name='parkingEntry'),
     path('parkingEntryView',views.ParkingEntry.as_view(),{'parkingEntryView':''},name='parkingEntryView'),

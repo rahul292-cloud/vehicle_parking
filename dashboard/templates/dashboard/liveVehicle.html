@@ -1,76 +1,88 @@
 {% extends 'dashboard/base.html' %}
+
+{%load static %}
 {% block title %}
-Exit vehicle
+Live vehicle
 {% endblock %}
 
 {% block content %}
 
-      <div class="app-title">
-        <div>
-          <h1><i class="fa fa-th-list"></i> Live Vehicle</h1>
-          <p>Book vehicle to display analytical data effectively</p>
-        </div>
-        <ul class="app-breadcrumb breadcrumb side">
-          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-          <li class="breadcrumb-item">Tables</li>
-          <li class="breadcrumb-item active"><a href="#">Data Table</a></li>
-        </ul>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="tile">
+<div class="app-title">
+    <div>
+        <h1><i class="fa fa-th-list"></i> Live Vehicle</h1>
+        <p>Book vehicle to display analytical data effectively</p>
+    </div>
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+        <li class="breadcrumb-item">Tables</li>
+        <li class="breadcrumb-item active"><a href="#">Data Table</a></li>
+    </ul>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
             <div class="tile-body">
-              <div class="table-responsive">
-                <table class="table table-hover table-bordered" id="sampleTable">
-                  <thead>
-                    <tr>
-                      <th>Barcode Number</th>
-                      <th>Vehicle Number</th>
-                      <th>Chessis Number</th>
-                      <th>Vehicle Model</th>
-                      <th>Variants</th>
-                      <th>Color</th>
-                      <th>Entry Date</th>
-                      <th>Exit Date</th>
-                      <th>Parking Slot</th>
-                    </tr>
-                  </thead>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                        <tr>
+                            <th>Barcode Number</th>
+                            <th>Vehicle Number</th>
+                            <th>Chessis Number</th>
+                            <th>Vehicle Model</th>
+                            <th>Variants</th>
+                            <th>Color</th>
+                            <th>Entry Date</th>
+                            <th>Entry Time</th>
+                            <th>Exit Date</th>
+                            <th>Exit Time</th>
+                            <th>Parking Slot</th>
+                        </tr>
+                        </thead>
 
-                  {% for exit in form %}
+                        {% for exit in form %}
 
-                  <tbody>
-                    <tr>
-<!--                      <td>{{exit.client_barcode}}</td>-->
-                      <td>{{exit.client_selected_barcode}}</td>
-                      <td>{{exit.vehicle_no}}</td>
-                      <td>{{exit.chessis_no}}</td>
-                      <td>{{exit.vehicle_model}}</td>
-                      <td>{{exit.variants}}</td>
-                      <td>{{exit.color}}</td>
-<!--                      <td>{{exit.client_date}}</td>-->
-                      <td>{{exit.booking_date}}</td>
-                      <td>{{exit.bn}}</td>
-<!--                      <td>{{exit.slot}}</td>-->
-                      <td>{{exit.client_parking_slot}}</td>
+                        <tbody>
+                        <tr>
+                            <!--                      <td>{{exit.client_barcode}}</td>-->
+                            <td>{{exit.client_selected_barcode}}</td>
+                            <td>{{exit.vehicle_no}}</td>
+                            <td>{{exit.chessis_no}}</td>
+                            <td>{{exit.vehicle_model}}</td>
+                            <td>{{exit.variants}}</td>
+                            <td>{{exit.color}}</td>
+                            <!--                      <td>{{exit.client_date}}</td>-->
+                            <td>{{exit.client_entry_date}}</td>
+                            <td>{{exit.client_entry_time}}</td>
+                            <td>{{exit.client_exit_date}}</td>
+                            <td>{{exit.client_exit_time}}</td>
+                            <!--                      <td>{{exit.slot}}</td>-->
+                            <td>{{exit.client_parking_slot}}</td>
 
 
+                        </tr>
+                        </tbody>
 
-                    </tr>
-                  </tbody>
-
-                  {% endfor %}
-                </table>
-              </div>
+                        {% endfor %}
+                    </table>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
+</div>
 {% endblock %}
 {% block script %}
 {{ block.super }}
+<!--<script src="{% static 'dashboard/js/bootstrap.min.js'%}"></script>-->
+<!--<script src="{% static 'dashboard/js/plugins/pace.min.js'%}"></script>-->
 
-<script>
+<!--<script type="text/javascript" src="{% static 'dashboard/js/plugins/jquery.dataTables.min.js' %}"></script>-->
+<!--<script type="text/javascript" src="{% static  'dashboard/js/plugins/dataTables.bootstrap.min.js' %}"></script>-->
+
+<script type="text/javascript">
   $('#sampleTable').DataTable();
+
+
 
 
 </script>
@@ -89,8 +101,9 @@ if(document.location.hostname == 'pratikborsadiya.in') {
       }
 
 
-</script>
 
+
+</script>
 
 
 {% endblock %}

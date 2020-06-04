@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>{% extends 'dashboard/base.html' %}
+{% block title %}
+Parking Slot Delete
+{% endblock %}
+
+{% block content %}
+
+<div class="app-title">
+    <div>
+        <h1><i class="fa fa-plus"></i>  Parking Slot</h1>
+<!--        <h1><i class="fa fa-edit"></i> Add Parking Slot</h1>-->
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <!--            <h3 class="tile-title">New Category Data</h3>-->
+            <div class="tile-body">
+
+            <p>Are you sure you want to delete " {{item}} "?</p>
+
+                <form class="form-horizontal" action="{% url 'parkingSlotDelete' item.id  %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="tile-footer">
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-3">
+                                <button class="btn btn-primary" type="submit"><i
+                                        class="fa fa-fw fa-lg fa-check-circle"></i>Submit
+                                </button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="{% url 'parkingSlotView'%}">
+                                <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <div class="clearix"></div>
+</div>
+
+
+
+{% endblock %}
+
+
+

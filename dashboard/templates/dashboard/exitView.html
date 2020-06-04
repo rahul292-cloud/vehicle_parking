@@ -1,6 +1,6 @@
 {% extends 'dashboard/base.html' %}
 {% block title %}
-Exit vehicle
+Exit View
 {% endblock %}
 
 {% block content %}
@@ -31,8 +31,9 @@ Exit vehicle
                       <th>Variants</th>
                       <th>Color</th>
                       <th>Exit Date</th>
+                      <th>Exit Time</th>
                       <th>Parking Slot</th>
-                      <th>Action</th>
+<!--                      <th>Action</th>-->
                     </tr>
                   </thead>
                   {% for exit in form %}
@@ -45,14 +46,15 @@ Exit vehicle
                       <td>{{exit.vehicle_model}}</td>
                       <td>{{exit.variants}}</td>
                       <td>{{exit.color}}</td>
-                      <td>{{exit.exit_date}}</td>
+                      <td>{{exit.client_exit_date}}</td>
+                      <td>{{exit.client_exit_time}}</td>
                       <td>{{exit.slot}}</td>
 
-                      <td>
-                        <a class="btn btn-primary" href=""><i class="fa fa-pencil-square-o"></i></a>
+<!--                      <td>-->
+<!--                        <a class="btn btn-primary" href=""><i class="fa fa-pencil-square-o"></i></a>-->
 
-                        <a class="btn btn-primary" href=""><i class="fa fa-trash-o"></i></a>
-                      </td>
+<!--                        <a class="btn btn-primary" href=""><i class="fa fa-trash-o"></i></a>-->
+<!--                      </td>-->
                     </tr>
                   </tbody>
 

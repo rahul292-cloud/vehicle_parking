@@ -124,20 +124,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
-# MEDIA_ROOT= os.path.join(BASE_DIR,'media')
-
-
-
-# STATIC FILES WILL BE SERVED FROM STATIC_CDN WHEN WE ARE LIVE - OUT SIDE OF PROJECT
-# STATIC_ROOT = os.path.join(BASE_DIR,'static')
-
-
-#THIS KEEPS THE PROJECT FILES - CSS/JS/IMAGES/FONTS
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR,'static'),
-# ]
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
