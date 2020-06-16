@@ -56,34 +56,28 @@ Location
 
 <script>
 var x=document.getElementById('status');
-<!--x.innerHTML="output";-->
 
-function getlocation(){
 
-if(navigator.geolocation)
-{
-navigator.geolocation.getCurrentPosition(ShowPosition);
-}
-else
-{
-x.innerHTML="not output";
+function getlocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition, showError);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
 }
 
-}
+function showPosition(position) {
+<!--  x.innerHTML = "Latitude: " + position.coords.latitude +-->
+<!--  "<br>Longitude: " + position.coords.longitude;-->
 
-function ShowPosition(position){
-<!--x.innerHTML="Latitude =" + position.coords.latitude;-->
-<!--x.innerHTML +="<br />"-->
-<!--x.innerHTML +="Longitude =" + position.coords.longitude;-->
+  var locAPI ="http://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude +","+position.coords.longitude +"&sensor=true";
+  x.innerHTML =locAPI;
 
-var locAPI ="http://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude +","+position.coords.longitude +"&sensor=true";
-<!--x.innerHTML =locAPI;-->
-debugger
-$.ajax({
+  $.ajax({
     type: "GET",
     url: locAPI,
-    success: function(data, status, jqXHR) {
-    console.log(status, data)
+    success: function(data, jqXHR) {
+    console.log(data)
     x.innerHTML= data.results[0].address_components[4].long_name+", ";
     x.innerHTML= data.results[0].address_components[5].long_name+", ";
     x.innerHTML= data.results[0].address_components[6].long_name;
@@ -94,7 +88,42 @@ $.ajax({
 });
 
 
+
 }
+
+function showError(error) {
+  switch(error.code) {
+    case error.PERMISSION_DENIED:
+      x.innerHTML = "User denied the request for Geolocation."
+      break;
+    case error.POSITION_UNAVAILABLE:
+      x.innerHTML = "Location information is unavailable."
+      break;
+    case error.TIMEOUT:
+      x.innerHTML = "The request to get user location timed out."
+      break;
+    case error.UNKNOWN_ERROR:
+      x.innerHTML = "An unknown error occurred."
+      break;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

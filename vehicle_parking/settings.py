@@ -119,6 +119,8 @@ USE_L10N = True
 USE_TZ = True
 
 
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -133,5 +135,13 @@ MEDIA_URL = '/media/'
 
 # MEDIA FILES WILL BE SERVED FROM STATIC_CDN WHEN WE ARE LIVE
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'palp18910@gmail.com'
+EMAIL_HOST_PASSWORD = 'pavan123'
+EMAIL_USE_TLS = True
+
 
 

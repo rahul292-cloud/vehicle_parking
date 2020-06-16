@@ -124,8 +124,31 @@
                 class="app-menu__label">Dashboard</span></a></li>
 
 
+<!--        <li><a class="app-menu__item" href="{% url 'amcInventory' %}"><i class="app-menu__icon fa fa-file-code-o"></i><span-->
+<!--                class="app-menu__label">Amc Inventory</span></a></li>-->
+
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i
+                class="app-menu__icon fa fa-building"></i><span class="app-menu__label">Amc Inventory</span><i
+                class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                <li><a class="treeview-item" href="{% url 'amcInventory'%}"><i class="icon fa fa-circle-o"></i>
+                    Add</a></li>
+
+                <li><a class="treeview-item" href="{% url 'amcInventory_view'%}"><i class="icon fa fa-circle-o"></i>
+                    Manager</a></li>
+
+                <li><a class="treeview-item" href="{% url 'amcInventoryHistory_view'%}"><i class="icon fa fa-circle-o"></i>
+                    History</a></li>
+
+            </ul>
+        </li>
+
+
         <li><a class="app-menu__item" href="{% url 'Location' %}"><i class="app-menu__icon fa fa-file-code-o"></i><span
                 class="app-menu__label">Live Location</span></a></li>
+
+        <li><a class="app-menu__item" href="{% url 'sendmail' %}"><i class="app-menu__icon fa fa-file-code-o"></i><span
+                class="app-menu__label">Send Mail</span></a></li>
 
 
         <li><a class="app-menu__item" href="{% url 'vehicle' %}"><i class="app-menu__icon fa fa-file-code-o"></i><span

@@ -39,3 +39,43 @@ class ParkingExit(BaseModel):
     def __str__(self):
         return str(self.barcode)
 
+
+
+
+
+
+class AmcInventory(models.Model):
+    customer_name =models.CharField(max_length=100,null=False,blank=False,editable=True)
+    location =models.CharField(max_length=100,null=False,blank=False,editable=True)
+    installation_location =models.CharField(max_length=100,null=False,blank=False,editable=True)
+    product_description =models.CharField(max_length=100,null=False,blank=False,editable=True)
+    device_type =models.CharField(max_length=100,null=True,blank=True,editable=True)
+    model_number =models.CharField(max_length=100,null=True,blank=True,editable=True)
+    serial_number =models.CharField(max_length=100,null=True,blank=True,editable=True)
+    amc_start_date =models.DateField(null=True,blank=True)
+    amc_end_date =models.DateField(null=True,blank=True)
+    warranty_start_date =models.DateField(null=True,blank=True)
+    warranty_end_date =models.DateField(null=True,blank=True)
+
+
+    def __str__(self):
+        return self.customer_name
+
+
+class AmcInventoryHistory(models.Model):
+    # amc_inventory=models.ForeignKey(AmcInventory,on_delete=models.CASCADE)
+    customer_name = models.CharField(max_length=100, null=False, blank=False, editable=True)
+    location = models.CharField(max_length=100, null=False, blank=False, editable=True)
+    installation_location = models.CharField(max_length=100, null=False, blank=False, editable=True)
+    product_description = models.CharField(max_length=100, null=False, blank=False, editable=True)
+    device_type = models.CharField(max_length=100, null=True, blank=True, editable=True)
+    model_number = models.CharField(max_length=100, null=True, blank=True, editable=True)
+    serial_number = models.CharField(max_length=100, null=True, blank=True, editable=True)
+    amc_start_date = models.DateField(null=True, blank=True)
+    amc_end_date = models.DateField(null=True, blank=True)
+    warranty_start_date = models.DateField(null=True, blank=True)
+    warranty_end_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return self.amc_inventory
+

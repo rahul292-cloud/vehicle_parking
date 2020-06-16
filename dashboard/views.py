@@ -1,18 +1,19 @@
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,HttpResponse
 from django.views.generic import View
 from django.contrib.auth.models import User
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-# from .decorators import unauthenticated_user, allowed_users, admin_only
+from django.core.mail import EmailMessage
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from allModels import category, add_vehicle, parking_slot, parking_in, parkingOut, vehicle_details, booking, \
-    vehicle_details
+    vehicle_details, models
 from allModels.booking import ParkingExit
-from django.db.models import Value as V
+from django.db.models import Value as V,Q
+
 
 from django.shortcuts import get_object_or_404
 import openpyxl
@@ -29,9 +30,187 @@ from django.db.models import (Case, CharField, Count, DateTimeField,
 def index(request):
     return render(request, 'dashboard/base.html')
 
+def sendmail(request):
+    context = {}
+    if request.method=="POST":
+        email_id = request.POST['to'].split(' , ')
+        subject = request.POST['subject']
+        message = request.POST['message']
+        try:
+            email = EmailMessage(subject, message, to=email_id)
+            email.send()
+            context["status"] = "Email Sent"
+            context["cls"] = "alert-success"
+        except:
+            context["status"] = "Could not send email please check your internet connection / Email address"
+            context["cls"] = "alert-danger"
+
+    return render(request, 'dashboard/sendmail.html',context)
+import random
+
+def reset_password(request):
+    user_name=request.GET["user_username"]
+    try:
+        user=get_object_or_404(User,username=user_name)
+        otp=random.randint(1000,9999)
+        msz="Dear {}  \n{} is your one time password (OTP) \nDo not share it with other \nThanks&Regards.".format(user.username,otp)
+        try:
+            email=EmailMessage("Account Verification",msz,to=[user.email])
+            email.send()
+            return JsonResponse({"status": "sent", "email": user.email,"otp":otp})
+
+        except:
+            return JsonResponse({"status": "error", "email": user.email})
+
+    except:
+        return JsonResponse({"status":"failed"})
+
+def forgot_password(request):
+    contex={}
+    if request.method=="POST":
+        user_name=request.POST['user_username']
+        new_pass=request.POST['user_pass']
+        confirm_pass=request.POST['user_cpass']
+        try:
+            pass
+        except:
+            pass
+        if new_pass==confirm_pass:
+            user = get_object_or_404(User, username=user_name)
+            user.set_password(new_pass)
+            user.save()
+            login(request, user)
+            contex["status"]="Password changed successfully";
+            return redirect(to='login')
+        else:
+            contex["status"] = "Invalid Password";
+            return render(request, 'dashboard/login.html', contex)
+
+
+
+
+
+
 def Location(request):
     return render(request, 'dashboard/location.html')
 
+
+class AMCInventory(View):
+    amcInventory_model = booking.AmcInventory
+    amcInventoryHistory_model = booking.AmcInventoryHistory
+    amcInventory_form = AmcInventoryForm
+    amcInventory_templates = "dashboard/amcInventory.html"
+    amcInventory_view_templates = "dashboard/amcInventory_view.html"
+    amcInventoryHistory_view_templates = "dashboard/amcInventoryHistory_view.html"
+
+    def get(self, request, *args, **kwargs):
+        if 'amcInventory' in kwargs:
+            return render(request, self.amcInventory_templates, {'form': self.amcInventory_form()})
+        elif 'amcInventory_view' in kwargs:
+            context = {}
+            amcInventory_model=self.amcInventory_model.objects.all().order_by('-id')
+            context["form"] =amcInventory_model
+
+            if "search" in request.GET:
+                search_product=request.GET["search"]
+                search_amcInventoryHistory=self.amcInventoryHistory_model.objects.filter(Q(serial_number__icontains=search_product)|Q(model_number__icontains=search_product))
+                context["form"] = search_amcInventoryHistory
+            return render(request,self.amcInventory_view_templates,context)
+
+        elif 'amcInventoryHistory_view' in kwargs:
+            context={}
+            all_amcInventoryHistory=self.amcInventoryHistory_model.objects.all().order_by('-id')
+            context['form'] = all_amcInventoryHistory
+            if "search" in request.GET:
+                search_product=request.GET["search"]
+                search_amcInventoryHistory=self.amcInventoryHistory_model.objects.filter(Q(serial_number__icontains=search_product)|Q(model_number__icontains=search_product))
+                context["form"] = search_amcInventoryHistory
+            else:
+                pass
+            return render(request,self.amcInventoryHistory_view_templates,context)
+
+    def post(self, request, *args, **kwargs):
+        forms = self.amcInventory_form(request.POST)
+        if forms.is_valid():
+            customer_name = forms.cleaned_data.get('customer_name')
+            location = forms.cleaned_data.get('location')
+            installation_location = forms.cleaned_data.get('installation_location')
+            product_description = forms.cleaned_data.get('product_description')
+            device_type = forms.cleaned_data.get('device_type')
+            model_number = forms.cleaned_data.get('model_number')
+            serial_number = forms.cleaned_data.get('serial_number')
+            amc_start_date = forms.cleaned_data.get('amc_start_date')
+            amc_end_date = forms.cleaned_data.get('amc_end_date')
+            warranty_start_date = forms.cleaned_data.get('warranty_start_date')
+            warranty_end_date = forms.cleaned_data.get('warranty_end_date')
+
+            self.amcInventory_model.objects.create(customer_name=customer_name, location=location,
+                                                   installation_location=installation_location,
+                                                   product_description=product_description,
+                                                   device_type=device_type,
+                                                   model_number=model_number,
+                                                   serial_number=serial_number,
+                                                   amc_start_date=amc_start_date,
+                                                   amc_end_date=amc_end_date,
+                                                   warranty_start_date=warranty_start_date,
+                                                   warranty_end_date=warranty_end_date)
+            return redirect(to='amcInventory_view')
+
+class AMCInventoryEdit(View):
+    amcInventory_model = booking.AmcInventory
+    amcInventoryHistory_model = booking.AmcInventoryHistory
+    amcInventory_form = AmcInventoryForm
+    amcInventoryHistory_form = AmcInventoryHistoryForm
+    amcInventory_edit_templates = "dashboard/amcInventory_Edit.html"
+
+    def get(self, request, *args, **kwargs):
+        if 'amcInventoryEdit' in kwargs:
+            editmodel = self.amcInventory_model.objects.get(id=kwargs.get('object_id'))
+            editForm = self.amcInventory_form(instance=editmodel)
+            return render(request, self.amcInventory_edit_templates, {'form': editForm})
+
+
+    def post(self, request, *args, **kwargs):
+
+        forms = self.amcInventory_form(request.POST)
+        if forms.is_valid():
+            customer_name = forms.cleaned_data.get('customer_name')
+            location = forms.cleaned_data.get('location')
+            installation_location = forms.cleaned_data.get('installation_location')
+            product_description = forms.cleaned_data.get('product_description')
+            device_type = forms.cleaned_data.get('device_type')
+            model_number = forms.cleaned_data.get('model_number')
+            serial_number = forms.cleaned_data.get('serial_number')
+            amc_start_date = forms.cleaned_data.get('amc_start_date')
+            amc_end_date = forms.cleaned_data.get('amc_end_date')
+            warranty_start_date = forms.cleaned_data.get('warranty_start_date')
+            warranty_end_date = forms.cleaned_data.get('warranty_end_date')
+
+            priouse_history= self.amcInventory_model.objects.get(id=kwargs.get('object_id'))
+
+            # print(priouse_history.device_type)
+            self.amcInventoryHistory_model.objects.create(customer_name=priouse_history.customer_name, location=priouse_history.location,
+                                                   installation_location=priouse_history.installation_location,
+                                                   product_description=priouse_history.product_description,
+                                                   device_type=priouse_history.device_type,
+                                                   model_number=priouse_history.model_number,
+                                                   serial_number=priouse_history.serial_number,
+                                                   amc_start_date=priouse_history.amc_start_date,
+                                                   amc_end_date=priouse_history.amc_end_date,
+                                                   warranty_start_date=priouse_history.warranty_start_date,
+                                                   warranty_end_date=priouse_history.warranty_end_date)
+
+            self.amcInventory_model.objects.filter(id=kwargs.get('object_id')).update(customer_name=customer_name, location=location,
+                                                   installation_location=installation_location,
+                                                   product_description=product_description,
+                                                   device_type=device_type,
+                                                   model_number=model_number,
+                                                   serial_number=serial_number,
+                                                   amc_start_date=amc_start_date,
+                                                   amc_end_date=amc_end_date,
+                                                   warranty_start_date=warranty_start_date,
+                                                   warranty_end_date=warranty_end_date)
+            return redirect(to='amcInventory_view')
 
 class RegisterPage(View):
     register_template = "dashboard/register.html"
@@ -128,6 +307,7 @@ class Chart(View):
             }
             return JsonResponse(data, safe=False)
 
+
 class Dashboard(View):
     def get(self, request, *args, **kwargs):
         # @method_decorator(login_required(login_url='login'))
@@ -153,7 +333,8 @@ class Dashboard(View):
             countVehicle = totalvehicle.count()
 
             context = {
-                'totalslot': totalslots, 'bookingSlot': avaiable, 'user': countVehicle, 'book': all_book, 'exit': all_exit,
+                'totalslot': totalslots, 'bookingSlot': avaiable, 'user': countVehicle, 'book': all_book,
+                'exit': all_exit,
                 'booking_vehicle': booking_book, 'unbooking': unbooking_book
             }
             return render(request, 'dashboard/Dashboard.html', context)
@@ -288,10 +469,8 @@ class Booking(View):
     def get_data(self, request, id=None, *args, **kwargs):
         print(id)
         if 'barcode_details' in kwargs:
-            # print(request.POST.get('barcode_details'))
-
             data = vehicle_details.VehicleDetail.objects.filter(pk=request.POST.get('barcode_details')).values(
-                 'vehicle_number', 'chessis_number', 'vehicle_model', 'variants', 'color',
+                'vehicle_number', 'chessis_number', 'vehicle_model', 'variants', 'color',
                 'status'
             )
             #     .annotate(
@@ -331,7 +510,8 @@ class Booking(View):
                 .annotate(
                 client_booking_time=ExpressionWrapper(Func(F('booking_date'), Value("HH24:MI:SS"), function='TO_CHAR'),
                                                       output_field=CharField()),
-                client_booking_date=ExpressionWrapper(Func(F('booking_date'), Value("DD/MM/YYYY"), function='TO_CHAR'),output_field=CharField()),
+                client_booking_date=ExpressionWrapper(Func(F('booking_date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
+                                                      output_field=CharField()),
             )
 
             return render(request, self.booking_view_templates, {'form': model})
@@ -372,8 +552,6 @@ class Booking(View):
         return redirect(to='bookingView')
 
 
-
-
 class BookingEdit(View):
     booking_forms = BookVehicleForm
     booking_model = booking.BookVehicle
@@ -391,8 +569,6 @@ class BookingEdit(View):
             #     client_booking_date=ExpressionWrapper(Func(F('date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
             #                                     output_field=CharField()),
             # )
-
-
 
             return list(data)
 
@@ -453,14 +629,11 @@ class Exit(View):
         elif 'exitView' in kwargs:
             model = self.exit_model.objects.all().order_by('-id').annotate(
                 client_exit_date=ExpressionWrapper(Func(F('exit_date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
-                              output_field=CharField()),client_exit_time=ExpressionWrapper(Func(F('exit_date'), Value("HH24:MI:SS"), function='TO_CHAR'),
-                              output_field=CharField()),
-
+                                                   output_field=CharField()),
+                client_exit_time=ExpressionWrapper(Func(F('exit_date'), Value("HH24:MI:SS"), function='TO_CHAR'),
+                                                   output_field=CharField()),
 
             )
-
-
-
 
             return render(request, self.exit_view_templates, {'form': model})
 
@@ -500,7 +673,6 @@ class Exit(View):
         return redirect(to='exitView')
 
 
-
 class LiveTracking(View):
     booking_model = booking.BookVehicle
 
@@ -517,16 +689,17 @@ class LiveTracking(View):
                 client_selected_barcode=F('barcode_details__barcode_number'),
                 # bn=F('parkingexit__exit_date')
                 client_entry_date=ExpressionWrapper(Func(F('booking_date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
-                              output_field=CharField()),client_entry_time = ExpressionWrapper(
-                Func(F('booking_date'), Value("HH24:MI:SS"), function='TO_CHAR'),
-                output_field=CharField()),
+                                                    output_field=CharField()), client_entry_time=ExpressionWrapper(
+                    Func(F('booking_date'), Value("HH24:MI:SS"), function='TO_CHAR'),
+                    output_field=CharField()),
 
-                client_exit_date=ExpressionWrapper(Func(F('parkingexit__exit_date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
-                              output_field=CharField()), client_exit_time = ExpressionWrapper(
-                Func(F('parkingexit__exit_date'), Value("HH24:MI:SS"), function='TO_CHAR'),
-                output_field=CharField()),
+                client_exit_date=ExpressionWrapper(
+                    Func(F('parkingexit__exit_date'), Value("DD/MM/YYYY"), function='TO_CHAR'),
+                    output_field=CharField()), client_exit_time=ExpressionWrapper(
+                    Func(F('parkingexit__exit_date'), Value("HH24:MI:SS"), function='TO_CHAR'),
+                    output_field=CharField()),
 
-            # bn = Coalesce('parkingexit__exit_date', V("-")),
+                # bn = Coalesce('parkingexit__exit_date', V("-")),
             ) \
                 .order_by('-id') \
                 .distinct()

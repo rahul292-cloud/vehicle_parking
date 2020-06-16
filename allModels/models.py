@@ -21,3 +21,5 @@ class BaseModel(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         return super(BaseModel, self).save(force_insert=False, force_update=False, using=None, update_fields=None)
+
+

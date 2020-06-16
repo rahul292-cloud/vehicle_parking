@@ -144,3 +144,50 @@ class UserVehicleForm(forms.ModelForm):
         }
 
 
+class AmcInventoryForm(forms.ModelForm):
+
+    class Meta:
+        model=booking.AmcInventory
+        fields = [
+            'customer_name', 'location', 'installation_location', 'product_description'
+            , 'device_type', 'model_number', 'serial_number', 'amc_start_date', 'amc_end_date', 'warranty_start_date','warranty_end_date'
+        ]
+        widgets={
+
+            'customer_name': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'location': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'installation_location': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'product_description': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'device_type': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'model_number': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'serial_number': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'amc_start_date': forms.DateInput( attrs={'type': 'date', 'class': 'form-control form-control-sm'}),
+            'amc_end_date': forms.DateInput( attrs={'type': 'date', 'class': 'form-control form-control-sm'}),
+            'warranty_start_date': forms.DateInput( attrs={'type': 'date', 'class': 'form-control form-control-sm'}),
+            'warranty_end_date': forms.DateInput( attrs={'type': 'date', 'class': 'form-control form-control-sm'}),
+        }
+
+class AmcInventoryHistoryForm(forms.ModelForm):
+
+    class Meta:
+        model=booking.AmcInventoryHistory
+        fields = [
+         'customer_name','location','installation_location','product_description'
+            ,'device_type','model_number','serial_number','amc_start_date','amc_end_date','warranty_start_date'
+        ]
+        widgets = {
+
+            'customer_name': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'location': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'installation_location': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'product_description': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'device_type': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'model_number': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'serial_number': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+            'amc_start_date': forms.DateInput( attrs={'type': 'date', 'class': 'form-control form-control-sm'}),
+            'amc_end_date': forms.DateInput( attrs={'type': 'date', 'class': 'form-control form-control-sm'}),
+            'warranty_start_date': forms.DateInput( attrs={'type': 'date', 'class': 'form-control form-control-sm'}),
+            'warranty_end_date': forms.DateInput( attrs={'type': 'date', 'class': 'form-control form-control-sm'}),
+        }
+
+

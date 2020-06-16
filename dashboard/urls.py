@@ -3,8 +3,17 @@ from . import views
 
 urlpatterns = [
     path('index', views.index, name='index'),
+    path('sendmail', views.sendmail, name='sendmail'),
+    path('reset_password', views.reset_password, name='reset_password'),
+    path('forgot_password', views.forgot_password, name='forgot_password'),
     path('Location', views.Location, name='Location'),
     path('vehicle', views.Vehicle.as_view(),{'vehicle':''}, name='vehicle'),
+
+    path('amcInventory',views.AMCInventory.as_view(),{'amcInventory':''},name='amcInventory'),
+    path('amcInventory_view',views.AMCInventory.as_view(),{'amcInventory_view':''},name='amcInventory_view'),
+    path('amcInventoryHistory_view',views.AMCInventory.as_view(),{'amcInventoryHistory_view':''},name='amcInventoryHistory_view'),
+    path('amcInventoryEdit/<int:object_id>',views.AMCInventoryEdit.as_view(),{'amcInventoryEdit':''},name='amcInventoryEdit'),
+
     path('vehicleView', views.Vehicle.as_view(),{'vehicleView':''}, name='vehicleView'),
 
     # path('vehicle_excel',views.VehicleExcel.as_view(),{'vehicle_excel':''},name='vehicle_excel'),
